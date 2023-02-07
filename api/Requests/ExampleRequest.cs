@@ -1,4 +1,4 @@
-﻿namespace backend.Requests;
+﻿namespace api.Requests;
 
 public class ExampleRequest : IHttpRequest
 {

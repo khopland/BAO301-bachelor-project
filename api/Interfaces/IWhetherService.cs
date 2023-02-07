@@ -1,9 +1,8 @@
-﻿using backend.Services;
+﻿using api.Services;
 
-namespace backend.Interfaces
+namespace api.Interfaces;
+
+public interface IWhetherService
 {
-    public interface IWhetherService
-    {
-        public IEnumerable<WeatherForecast> GetWhether(string city, int days);
-    }
+    public IEnumerable<WeatherForecast> GetWhether(string city, int days);
 }

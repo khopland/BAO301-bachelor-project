@@ -1,8 +1,8 @@
-﻿using backend.Interfaces;
-using backend.Requests;
+﻿using api.Interfaces;
+using api.Requests;
 using Mediator;
 
-namespace backend.Handlers;
+namespace api.Handlers;
 
 public class WhetherHandler : IRequestHandler<WhetherRequest, IResult>
 {

@@ -1,7 +1,7 @@
-﻿using backend.Requests;
+﻿using api.Requests;
 using Mediator;
 
-namespace backend.Handlers;
+namespace api.Handlers;
 
 public class ExampleHandler : IRequestHandler<ExampleRequest, IResult>
 {
