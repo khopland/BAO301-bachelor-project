@@ -1,25 +1,34 @@
 using api;
-using api.Interfaces;
 using api.Requests;
-using api.Services;
+using Core.Interfaces;
+using Infrastructure.Data;
+using Infrastructure.Repository;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddMediator();
-builder.Services.AddSingleton<IWhetherService, WhetherService>();
-
 builder.Services.AddSpaStaticFiles(c => { c.RootPath = "dist"; });
+builder.Services.AddMediator(o => { o.ServiceLifetime = ServiceLifetime.Scoped; });
+builder.Services.AddDbContext<BachelorDbContext>(o => o.UseInMemoryDatabase("bachelor"));
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
-
-app.MediateGet<ExampleRequest>("/api/example/{name}");
-app.MediateGet<WhetherRequest>("/api/{city}");
-
 app.UseSpaStaticFiles();
-
-app.UseSpa(c =>
+app.MapWhen(x => !x.Request.Path.Value?.StartsWith("/api") ?? true, b =>
 {
-    if (builder.Environment.IsDevelopment()) c.UseProxyToSpaDevelopmentServer("http://localhost:3000/");
+    b.UseSpa(c =>
+    {
+        if (builder.Environment.IsDevelopment()) c.UseProxyToSpaDevelopmentServer("http://localhost:3000/");
+    });
 });
+
+var group = app.MapGroup("/api");
+
+group.MapGet("/test", () => Results.Ok("test"));
+
+group.MediateGet<GetUserRequest>("/user/{userId:guid}");
+group.MediateGet<GetAllUsersRequest>("/user");
+group.MediatePost<CreatUserRequest>("/user");
+
 
 app.Run();

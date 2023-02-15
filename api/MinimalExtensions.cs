@@ -6,7 +6,7 @@ namespace api;
 
 public static class MinimalExtensions
 {
-    public static WebApplication MediateGet<TRequest>(this WebApplication app, [StringSyntax("route")] string template)
+    public static IEndpointRouteBuilder MediateGet<TRequest>(this IEndpointRouteBuilder app, [StringSyntax("route")] string template)
         where TRequest : IHttpRequest
     {
         app.MapGet(template,
@@ -14,7 +14,7 @@ public static class MinimalExtensions
         return app;
     }
 
-    public static WebApplication MediatePost<TRequest>(this WebApplication app, [StringSyntax("route")] string template)
+    public static IEndpointRouteBuilder MediatePost<TRequest>(this IEndpointRouteBuilder app, [StringSyntax("route")] string template)
         where TRequest : IHttpRequest
     {
         app.MapPost(template,
@@ -22,7 +22,7 @@ public static class MinimalExtensions
         return app;
     }
 
-    public static WebApplication MediatePut<TRequest>(this WebApplication app, [StringSyntax("route")] string template)
+    public static IEndpointRouteBuilder MediatePut<TRequest>(this IEndpointRouteBuilder app, [StringSyntax("route")] string template)
         where TRequest : IHttpRequest
     {
         app.MapPut(template,
