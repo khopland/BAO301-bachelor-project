@@ -24,7 +24,7 @@ app.MapWhen(x => !x.Request.Path.Value?.StartsWith("/api") ?? true, b =>
 
 var group = app.MapGroup("/api");
 
-group.MapGet("/test", () => Results.Ok("test"));
+group.MapGet("/hello", () => Results.Json(new{text="Hello from server!!"}));
 
 group.MediateGet<GetUserRequest>("/user/{userId:guid}");
 group.MediateGet<GetAllUsersRequest>("/user");
