@@ -1,0 +1,8 @@
+﻿dist
+bin
+obj
+node_modules
+.vs
+.idea
+.vscode
+*.md

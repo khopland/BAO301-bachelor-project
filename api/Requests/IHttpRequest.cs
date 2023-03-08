@@ -1,9 +1,7 @@
 ﻿using Mediator;
 
-namespace backend.Requests;
+namespace api.Requests;
 
 public interface IHttpRequest : IRequest<IResult>
 {
-
 }
-
