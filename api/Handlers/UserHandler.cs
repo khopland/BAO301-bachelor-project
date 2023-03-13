@@ -21,7 +21,7 @@ public class UserHandler : IRequestHandler<GetUserRequest, IResult>, IRequestHan
 
     public async ValueTask<IResult> Handle(CreatUserRequest request, CancellationToken cancellationToken)
     {
-        return Results.Ok(await _userRepository.CreateUser(new() { Name = request.User?.Name  },cancellationToken));
+        return Results.Ok(await _userRepository.CreateUser(new() { FirstName = request.User!.FirstName  },cancellationToken));
     }
 
     public async ValueTask<IResult> Handle(GetAllUsersRequest request, CancellationToken cancellationToken)
