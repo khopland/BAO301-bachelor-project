@@ -6,9 +6,12 @@ using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
+
 builder.Services.AddSpaStaticFiles(c => { c.RootPath = "dist"; });
 builder.Services.AddMediator(o => { o.ServiceLifetime = ServiceLifetime.Scoped; });
-builder.Services.AddDbContext<BachelorDbContext>(o => o.UseInMemoryDatabase("bachelor"));
+builder.Services.AddDbContext<BachelorDbContext>(o => 
+    o.UseNpgsql(configuration["postgresConnectionString"]));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
@@ -24,7 +27,7 @@ app.MapWhen(x => !x.Request.Path.Value?.StartsWith("/api") ?? true, b =>
 
 var group = app.MapGroup("/api");
 
-group.MapGet("/hello", () => Results.Json(new{text="Hello from server!!"}));
+group.MapGet("/hello", () => Results.Json(new { text = "Hello from server!!" }));
 
 group.MediateGet<GetUserRequest>("/user/{userId:guid}");
 group.MediateGet<GetAllUsersRequest>("/user");
