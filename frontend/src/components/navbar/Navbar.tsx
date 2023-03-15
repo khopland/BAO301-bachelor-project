@@ -1,6 +1,6 @@
 import MenuIcon from '@mui/icons-material/Menu'
 import HomeIcon from '@mui/icons-material/Home'
-import SearchIcon from '@mui/icons-material/search'
+import SearchIcon from '@mui/icons-material/Search'
 import PersonIcon from '@mui/icons-material/AccountCircle'
 import Drawer from '@mui/material/Drawer'
 import { List, ListItem, ListItemButton, ListItemText } from '@mui/material'
