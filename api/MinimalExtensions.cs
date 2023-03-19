@@ -10,7 +10,8 @@ public static class MinimalExtensions
         where TRequest : IHttpRequest
     {
         app.MapGet(template,
-            async (IMediator mediator, [AsParameters] TRequest request) => await mediator.Send(request));
+            async (IMediator mediator, [AsParameters] TRequest request) => await mediator.Send(request))
+            .WithOpenApi();
         return app;
     }
 
@@ -18,7 +19,8 @@ public static class MinimalExtensions
         where TRequest : IHttpRequest
     {
         app.MapPost(template,
-            async (IMediator mediator, [AsParameters] TRequest request) => await mediator.Send(request));
+            async (IMediator mediator, [AsParameters] TRequest request) => await mediator.Send(request))
+            .WithOpenApi();
         return app;
     }
 
@@ -26,7 +28,8 @@ public static class MinimalExtensions
         where TRequest : IHttpRequest
     {
         app.MapPut(template,
-            async (IMediator mediator, [AsParameters] TRequest request) => await mediator.Send(request));
+            async (IMediator mediator, [AsParameters] TRequest request) => await mediator.Send(request))
+            .WithOpenApi();
         return app;
     }
 }
