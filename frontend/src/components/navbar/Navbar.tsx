@@ -2,7 +2,6 @@ import MenuIcon from '@mui/icons-material/Menu'
 import HomeIcon from '@mui/icons-material/Home'
 import SearchIcon from '@mui/icons-material/Search'
 import PersonIcon from '@mui/icons-material/AccountCircle'
-import Drawer from '@mui/material/Drawer'
 
 import {
   List,
@@ -13,7 +12,7 @@ import {
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 
-export function NavBar(props: {}) {
+export function NavBar(props: { children: React.ReactNode }) {
   const navigate = useNavigate()
 
   const isMobile = useMediaQuery('(max-width: 600px)')
@@ -22,7 +21,7 @@ export function NavBar(props: {}) {
     <>
       {isMobile ? (
         <>
-          <Drawer variant="permanent" anchor="top">
+          <div className=" bg-white">
             <List className="w-screen flex justify-between h-16">
               <ListItem>
                 <ListItemButton className="flex flex-col">
@@ -37,7 +36,6 @@ export function NavBar(props: {}) {
                   onClick={(_) => navigate('/')}
                 >
                   <HomeIcon />
-               
                 </ListItemButton>
               </ListItem>
               <ListItem>
@@ -46,7 +44,6 @@ export function NavBar(props: {}) {
                   onClick={(_) => navigate('/hi')}
                 >
                   <SearchIcon />
-                  <ListItemText></ListItemText>
                 </ListItemButton>
               </ListItem>
               <ListItem>
@@ -55,49 +52,51 @@ export function NavBar(props: {}) {
                   onClick={(_) => navigate('/hi2')}
                 >
                   <PersonIcon />
-                  
                 </ListItemButton>
               </ListItem>
             </List>
-          </Drawer>
+          </div>
+          <div className="grow">{props.children}</div>
         </>
       ) : (
-        <Drawer variant="permanent">
-          <List className="w-20">
-            <ListItem>
-              <ListItemButton className="flex flex-col">
-                <MenuIcon />
-              </ListItemButton>
-            </ListItem>
-            <ListItem>
-              <ListItemButton
-                className="flex flex-col"
-                onClick={(_) => navigate('/')}
-              >
-                <HomeIcon />
-                
-              </ListItemButton>
-            </ListItem>
-            <ListItem>
-              <ListItemButton
-                className="flex flex-col"
-                onClick={(_) => navigate('/hi')}
-              >
-                <SearchIcon />
-                <ListItemText>discover</ListItemText>
-              </ListItemButton>
-            </ListItem>
-            <ListItem>
-              <ListItemButton
-                className="flex flex-col"
-                onClick={(_) => navigate('/hi2')}
-              >
-                <PersonIcon />
-                <ListItemText>profile</ListItemText>
-              </ListItemButton>
-            </ListItem>
-          </List>
-        </Drawer>
+        <div className="flex flex-row">
+          <div className=" bg-white w-20 h-screen">
+            <List className="w-20">
+              <ListItem>
+                <ListItemButton className="flex flex-col">
+                  <MenuIcon />
+                </ListItemButton>
+              </ListItem>
+              <ListItem>
+                <ListItemButton
+                  className="flex flex-col"
+                  onClick={(_) => navigate('/')}
+                >
+                  <HomeIcon />
+                </ListItemButton>
+              </ListItem>
+              <ListItem>
+                <ListItemButton
+                  className="flex flex-col"
+                  onClick={(_) => navigate('/hi')}
+                >
+                  <SearchIcon />
+                  <ListItemText>discover</ListItemText>
+                </ListItemButton>
+              </ListItem>
+              <ListItem>
+                <ListItemButton
+                  className="flex flex-col"
+                  onClick={(_) => navigate('/hi2')}
+                >
+                  <PersonIcon />
+                  <ListItemText>profile</ListItemText>
+                </ListItemButton>
+              </ListItem>
+            </List>
+          </div>
+          <div className="grow">{props.children}</div>
+        </div>
       )}
     </>
   )
