@@ -35,27 +35,27 @@ function App() {
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-        <NavBar />
-        <Routes>
-          <Route
-            path="/hi"
-            element={
-              <div className="flex items-center justify-center h-screen">
-                {' '}
-                hello
-              </div>
-            }
-          />
-          <Route path="/hi2" element={<Components />} />
-          <Route
-            path="/"
-            element={
-              <div className="flex items-center justify-center h-screen">
-                main page
-              </div>
-            }
-          />
-        </Routes>
+        <NavBar>
+          <Routes>
+            <Route
+              path="/hi"
+              element={
+                <div className="flex items-center justify-center h-screen">
+                  hello
+                </div>
+              }
+            />
+            <Route path="/hi2" element={<Components />} />
+            <Route
+              path="/"
+              element={
+                <div className="flex items-center justify-center h-screen">
+                  main page
+                </div>
+              }
+            />
+          </Routes>
+        </NavBar>
       </ThemeProvider>
     </BrowserRouter>
   )
