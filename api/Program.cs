@@ -14,6 +14,7 @@ builder.Services.AddDbContext<BachelorDbContext>(o =>
     o.UseNpgsql(configuration["postgresConnectionString"]));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 
 var app = builder.Build();
 app.UseSpaStaticFiles();
@@ -33,5 +34,9 @@ group.MediateGet<GetUserRequest>("/user/{userId:guid}");
 group.MediateGet<GetAllUsersRequest>("/user");
 group.MediatePost<CreatUserRequest>("/user");
 
+group.MediateGet<GetCourseRequest>("/course/{courseId:guid}");
+group.MediateGet<GetAllCoursesRequest>("/course");
+group.MediatePost<PostQueryCourseRequest>("/course/query");
+group.MediatePost<CreateCourseRequest>("/course");
 
 app.Run();
