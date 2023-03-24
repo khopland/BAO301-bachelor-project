@@ -16,7 +16,7 @@ public class Course
     public decimal Price { get; set; }
     public ICollection<Tag> Tags { get; set; } = default!;
     public int Level { get; set; }
-    public string? Language { get; set; }
+    public string Language { get; set; }
     public TimeSpan Duration { get; set; }
     public string? WbsCode { get; set; }
 }

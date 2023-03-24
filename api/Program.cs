@@ -18,6 +18,10 @@ builder.Services.AddDbContext<BachelorDbContext>(o =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ISkillRepository, SkillRepository>();
+builder.Services.AddScoped<ICourseTypeRepository, CourseTypeRepository>();
+
 var app = builder.Build();
 app.UseSpaStaticFiles();
 app.MapWhen(x => !((x.Request.Path.Value?.StartsWith("/api") ?? false)
@@ -39,6 +43,17 @@ group.MapGet("/hello", () => Results.Json(new { text = "Hello from server!!" }))
 group.MediateGet<GetUserRequest>("/user/{userId:guid}");
 group.MediateGet<GetAllUsersRequest>("/user");
 group.MediatePost<CreatUserRequest>("/user");
+
+group.MediateGet<GetCategoriesRequest>("/Category");
+group.MediatePost<CreateCategoryRequest>("/Category");
+
+group.MediateGet<GetTypesRequest>("/type");
+group.MediatePost<CreateTypeRequest>("/type");
+
+group.MediateGet<GetSkillsRequest>("/skill");
+group.MediatePost<CreateSkillRequest>("/skill");
+
+group.MediateGet<GetAllLanguagesRequest>("/language");
 
 group.MediateGet<GetCourseRequest>("/course/{courseId:guid}");
 group.MediateGet<GetAllCoursesRequest>("/course");

@@ -1,3 +1,4 @@
+using System.Globalization;
 using Core.Interfaces;
 using Core.Models;
 using Infrastructure.Data;
@@ -44,9 +45,16 @@ public class CourseRepository : ICourseRepository
         return res.Entity;
     }
 
+    public async Task<List<string>> GetLanguages(CancellationToken cancellationToken = new()){
+        return await _dbContext.Courses.Select(x =>x.Language).Distinct().ToListAsync(cancellationToken);
+    }
+
     public async Task<List<Course>> QueryCourses(CourseQuery query, CancellationToken cancellationToken = new())
     {
         var queryable = _dbContext.Courses.AsQueryable();
+
+        if (query.name != null)
+            queryable = queryable.Where(x => x.Name.StartsWith(query.name.Trim(),true,CultureInfo.InvariantCulture));
 
         if (query.CourseTypeId != null)
             queryable = queryable.Where(x => x.Type.Id == query.CourseTypeId);
