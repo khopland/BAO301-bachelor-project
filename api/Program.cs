@@ -53,6 +53,8 @@ group.MediatePost<CreateTypeRequest>("/type");
 group.MediateGet<GetSkillsRequest>("/skill");
 group.MediatePost<CreateSkillRequest>("/skill");
 
+group.MediateGet<GetAllLanguagesRequest>("/language");
+
 group.MediateGet<GetCourseRequest>("/course/{courseId:guid}");
 group.MediateGet<GetAllCoursesRequest>("/course");
 group.MediatePost<PostQueryCourseRequest>("/course/query");

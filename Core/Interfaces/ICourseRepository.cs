@@ -8,4 +8,5 @@ public interface ICourseRepository
     Task<List<Course>> GetAllCourses( CancellationToken cancellationToken= new());
     Task<Course> CreateCourse(Course course, CancellationToken cancellationToken = new());
     Task<List<Course>> QueryCourses(CourseQuery query, CancellationToken cancellationToken= new());
+    Task<List<string>> GetLanguages(CancellationToken cancellationToken = new());
 }

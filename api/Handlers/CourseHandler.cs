@@ -5,7 +5,8 @@ using Mediator;
 namespace api.Handlers;
 
 public class CourseHandler : IRequestHandler<GetAllCoursesRequest, IResult>, IRequestHandler<GetCourseRequest, IResult>,
-    IRequestHandler<PostQueryCourseRequest, IResult>, IRequestHandler<CreateCourseRequest,IResult>
+    IRequestHandler<PostQueryCourseRequest, IResult>, IRequestHandler<CreateCourseRequest, IResult>,
+    IRequestHandler<GetAllLanguagesRequest, IResult>
 {
     private readonly ICourseRepository _courseRepository;
 
@@ -21,16 +22,21 @@ public class CourseHandler : IRequestHandler<GetAllCoursesRequest, IResult>, IRe
 
     public async ValueTask<IResult> Handle(GetCourseRequest request, CancellationToken cancellationToken)
     {
-        return Results.Ok( await _courseRepository.GetCourseById(request.CourseId,cancellationToken));
+        return Results.Ok(await _courseRepository.GetCourseById(request.CourseId, cancellationToken));
     }
 
     public async ValueTask<IResult> Handle(PostQueryCourseRequest request, CancellationToken cancellationToken)
     {
-        return Results.Ok( await _courseRepository.QueryCourses(request.Query,cancellationToken));
+        return Results.Ok(await _courseRepository.QueryCourses(request.Query, cancellationToken));
     }
 
     public async ValueTask<IResult> Handle(CreateCourseRequest request, CancellationToken cancellationToken)
     {
         return Results.Ok(await _courseRepository.CreateCourse(request.Course, cancellationToken));
+    }
+    
+    public async ValueTask<IResult> Handle(GetAllLanguagesRequest request, CancellationToken cancellationToken)
+    {
+        return Results.Ok(await _courseRepository.GetLanguages(cancellationToken));
     }
 }
