@@ -1,11 +1,9 @@
-using Core;
-using Core.Models;
+using api.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Requests;
 
 public class CreatUserRequest : IHttpRequest
 {
-    [FromBody]
-    public User? User { get; set; }
+    [FromBody] public PostUser? User { get; init; }
 }
