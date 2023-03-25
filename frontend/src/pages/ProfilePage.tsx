@@ -3,7 +3,7 @@ import 'beercss';
 
 export const ProfilePage: React.FC = () => {
   return (
-    <main className="responsive bg-surface">
+    <main className="responsive">
         <h1>Profile Page</h1>
     </main>
   );
