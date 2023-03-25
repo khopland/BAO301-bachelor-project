@@ -54,7 +54,7 @@ public class CourseRepository : ICourseRepository
         var queryable = _dbContext.Courses.AsQueryable();
 
         if (query.name != null)
-            queryable = queryable.Where(x => x.Name.StartsWith(query.name.Trim(),true,CultureInfo.InvariantCulture));
+            queryable = queryable.Where(x => x.Name.ToLower().Contains(query.name.Trim().ToLower()));
 
         if (query.CourseTypeId != null)
             queryable = queryable.Where(x => x.Type.Id == query.CourseTypeId);
