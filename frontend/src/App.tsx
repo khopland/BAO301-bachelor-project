@@ -1,63 +1,26 @@
 import { ThemeProvider } from '@emotion/react'
 import { createTheme } from '@mui/material'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Components from './Components'
-import { NavBar } from './components/navbar/Navbar'
 import { Hero } from './components/Hero/Hero'
+import { NavRail } from './components/NavRail/NavRail';
+import { NavItem } from './components/NavRail/NavItem';
+import { HomePage } from './pages/HomePage';
+import { ExplorePage } from './pages/ExplorePage';
+import { ProfilePage } from './pages/ProfilePage';
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#7500c0',
-      light: '#a100ff',
-      dark: '#460073',
-    },
-    secondary: {
-      main: '#a055f5',
-      light: '#be82ff',
-      dark: '#b455aa',
-    },
-    error: {
-      main: '#ff3246',
-    },
-    warning: {
-      main: '#ff7800',
-    },
-    info: {
-      main: '#0041f0',
-    },
-    success: {
-      main: '#64ff50',
-    },
-  },
-})
-
-function App() {
-  return (
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <NavBar>
-          <Routes>
-            <Route
-              path="/hi"
-              element={
-                <div className="flex items-center justify-center h-screen">
-                  hello
-                </div>
-              }
-            />
-            <Route path="/hi2" element={<Components />} />
-            <Route
-              path="/"
-              element={
-                  <Hero />
-                      }
-            />
-          </Routes>
-        </NavBar>
-      </ThemeProvider>
-    </BrowserRouter>
-  )
-}
+const App: React.FC = () => (    
+  <BrowserRouter>
+    <NavRail>
+      <NavItem icon="home" label="Home" route="/" />
+      <NavItem icon="search" label="Explore" route="/explore" />
+      <NavItem icon="account_circle" label="Profile" route="/profile" />
+    </NavRail>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/explore" element={<ExplorePage />} />
+      <Route path="/profile" element={<ProfilePage />} />
+    </Routes>
+  </BrowserRouter>
+);
 
 export default App
