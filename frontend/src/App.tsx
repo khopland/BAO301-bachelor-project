@@ -1,12 +1,10 @@
-import { ThemeProvider } from '@emotion/react'
-import { createTheme } from '@mui/material'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { Hero } from './components/Hero/Hero'
 import { NavRail } from './components/NavRail/NavRail';
 import { NavItem } from './components/NavRail/NavItem';
 import { HomePage } from './pages/HomePage';
 import { ExplorePage } from './pages/ExplorePage';
 import { ProfilePage } from './pages/ProfilePage';
+import CoursePage from './pages/CoursePage';
 
 const App: React.FC = () => (    
   <BrowserRouter>
@@ -19,6 +17,7 @@ const App: React.FC = () => (
       <Route path="/" element={<HomePage />} />
       <Route path="/explore" element={<ExplorePage />} />
       <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/course" element={<CoursePage />} />
     </Routes>
   </BrowserRouter>
 );
