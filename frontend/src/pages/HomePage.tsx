@@ -1,4 +1,3 @@
-// Create a basic home page component with a div that says "Home Page"
 import React from 'react';
 import 'beercss';
 
