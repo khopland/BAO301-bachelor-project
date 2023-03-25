@@ -1,6 +1,7 @@
 using api;
 using api.Requests;
 using Core.Interfaces;
+using Core.Models;
 using Infrastructure.Data;
 using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -52,24 +53,24 @@ var group = app.MapGroup("/api");
 
 group.MapGet("/hello", () => Results.Json(new { text = "Hello from server!!" }));
 
-group.MediateGet<GetUserRequest>("/user/{userId:guid}");
-group.MediateGet<GetAllUsersRequest>("/user");
-group.MediatePost<CreatUserRequest>("/user");
+group.MediateGet<GetUserRequest>("/user/{userId:guid}","User",typeof(User));
+group.MediateGet<GetAllUsersRequest>("/user","User",typeof(List<User>));
+group.MediatePost<CreatUserRequest>("/user","User",typeof(User));
 
-group.MediateGet<GetCategoriesRequest>("/Category");
-group.MediatePost<CreateCategoryRequest>("/Category");
+group.MediateGet<GetCategoriesRequest>("/category","Category",typeof(List<Category>));
+group.MediatePost<CreateCategoryRequest>("/category","Category",typeof(Category));
 
-group.MediateGet<GetTypesRequest>("/type");
-group.MediatePost<CreateTypeRequest>("/type");
+group.MediateGet<GetTypesRequest>("/type","Type",typeof(List<CourseType>));
+group.MediatePost<CreateTypeRequest>("/type","Type",typeof(CourseType));
 
-group.MediateGet<GetSkillsRequest>("/skill");
-group.MediatePost<CreateSkillRequest>("/skill");
+group.MediateGet<GetSkillsRequest>("/skill","Skill",typeof(List<Skill>));
+group.MediatePost<CreateSkillRequest>("/skill","Skill",typeof(Skill));
 
-group.MediateGet<GetAllLanguagesRequest>("/language");
+group.MediateGet<GetAllLanguagesRequest>("/language","Language",typeof(List<string>));
 
-group.MediateGet<GetCourseRequest>("/course/{courseId:guid}");
-group.MediateGet<GetAllCoursesRequest>("/course");
-group.MediatePost<PostQueryCourseRequest>("/course/query");
-group.MediatePost<CreateCourseRequest>("/course");
+group.MediateGet<GetCourseRequest>("/course/{courseId:guid}","Course",typeof(Course));
+group.MediateGet<GetAllCoursesRequest>("/course","Course",typeof(List<Course>));
+group.MediatePost<PostQueryCourseRequest>("/course/query","Course",typeof(List<Course>));
+group.MediatePost<CreateCourseRequest>("/course","Course",typeof(Course));
 
 app.Run();
