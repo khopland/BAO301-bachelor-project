@@ -16,6 +16,14 @@ builder.Services.AddDbContext<BachelorDbContext>(o =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<BachelorDbContext>();
+    if (context.Database.GetPendingMigrations().Any())
+        context.Database.Migrate();
+}
+
 app.UseSpaStaticFiles();
 app.MapWhen(x => !x.Request.Path.Value?.StartsWith("/api") ?? true, b =>
 {
@@ -32,6 +40,5 @@ group.MapGet("/hello", () => Results.Json(new { text = "Hello from server!!" }))
 group.MediateGet<GetUserRequest>("/user/{userId:guid}");
 group.MediateGet<GetAllUsersRequest>("/user");
 group.MediatePost<CreatUserRequest>("/user");
-
 
 app.Run();
