@@ -3,6 +3,7 @@ import { createTheme } from '@mui/material'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Components from './Components'
 import { NavBar } from './components/navbar/Navbar'
+import { Hero } from './components/Hero/Hero'
 
 const theme = createTheme({
   palette: {
@@ -49,10 +50,8 @@ function App() {
             <Route
               path="/"
               element={
-                <div className="flex items-center justify-center h-screen">
-                  main page
-                </div>
-              }
+                  <Hero />
+                      }
             />
           </Routes>
         </NavBar>

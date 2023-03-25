@@ -4,7 +4,8 @@ using Mediator;
 
 namespace api.Handlers;
 
-public class UserHandler : IRequestHandler<GetUserRequest, IResult>, IRequestHandler<CreatUserRequest, IResult>,IRequestHandler<GetAllUsersRequest, IResult>
+public class UserHandler : IRequestHandler<GetUserRequest, IResult>, IRequestHandler<CreatUserRequest, IResult>,
+    IRequestHandler<GetAllUsersRequest, IResult>
 {
     private readonly IUserRepository _userRepository;
 
@@ -15,13 +16,16 @@ public class UserHandler : IRequestHandler<GetUserRequest, IResult>, IRequestHan
 
     public async ValueTask<IResult> Handle(GetUserRequest request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetUser(request.UserId,cancellationToken);
+        var user = await _userRepository.GetUser(request.UserId, cancellationToken);
         return Results.Ok(user);
     }
 
     public async ValueTask<IResult> Handle(CreatUserRequest request, CancellationToken cancellationToken)
     {
-        return Results.Ok(await _userRepository.CreateUser(new() { FirstName = request.User!.FirstName  },cancellationToken));
+        if (request.User == null)
+            return Results.BadRequest();
+
+        return Results.Ok(await _userRepository.CreateUser(request.User, cancellationToken));
     }
 
     public async ValueTask<IResult> Handle(GetAllUsersRequest request, CancellationToken cancellationToken)
