@@ -33,4 +33,3 @@ export const ExplorePage: React.FC = () => {
     </main>
   );
 };
-

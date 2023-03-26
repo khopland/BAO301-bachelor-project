@@ -13,6 +13,7 @@ const FilterItem = () => {
             <a className="chip border">
                 <span className='bold'>Beginner</span>
             </a>
+            
         </div>
         <br />
         <div>

@@ -15,7 +15,7 @@ const FilterMenu: FC<CoursesProps> = ({ children }) => {
                 <label className='text-xs'>Hinted search text</label>
                 <i>search</i>
             </div>
-            <div className='flex flex-col gap-7'>
+            <div className='flex flex-col'>
 
               {children}
           </div>
