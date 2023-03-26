@@ -1,12 +1,7 @@
 import { FC } from 'react';
 import 'beercss';
 
-interface FilterItemsProps {
-  filterValue: string;
-
-}
-
-const FilterItem: FC<FilterItemsProps> = ({filterValue}) => {
+const FilterItem = () => {
   return (
     <div className="flex-col gap-5">
         <div>

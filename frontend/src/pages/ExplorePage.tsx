@@ -7,7 +7,6 @@ import 'beercss';
 
 const title = 'Discover new courses'
 const description = 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas ducimus distinctio, maiores, vel suscipit neque animi velit natus libero exercitationem, dignissimos omnis perferendis voluptate sed autem. In eaque excepturi dolorem.'
-const value = 'Filter'
 
 export const ExplorePage: React.FC = () => {
   return (
@@ -18,7 +17,7 @@ export const ExplorePage: React.FC = () => {
       </header>
       <aside className=' flex col-span-4'>
         <FilterMenu>
-          <FilterItems filterValue='Price' />
+          <FilterItems />
         </FilterMenu>
       </aside>
 
