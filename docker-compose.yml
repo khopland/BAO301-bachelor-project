@@ -7,3 +7,18 @@ services:
       - '5432:5432'
     environment:
       - POSTGRES_PASSWORD=password
+    volumes:
+      - db:/var/lib/postgresql/data
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+    - '80:80'
+    depends_on:
+      - postgres
+    environment:
+      - postgresConnectionString=Server=postgres;Port=5432;Database=postgres;User Id=postgres;Password=password
+
+volumes:
+  db:
