@@ -8,32 +8,33 @@ body {
 
 @layer base {
   :root {
-    --primary: #8E00E2;
-    --on-primary: #FFFFFF;
-    --primary-container: #F2DAFF;
-    --on-primary-container: #2E004E;
-    --secondary: #95398D;
-    --on-secondary: #FFF;
-    --secondary-container: #FFD7F4;
+    --primary: #8e00e2;
+    --on-primary: #ffffff;
+    --primary-container: #f2daff;
+    --on-primary-container: #2e004e;
+    --secondary: #95398d;
+    --on-secondary: #fff;
+    --secondary-container: #ffd7f4;
     --on-secondary-container: #380037;
-    --tertiary: #7F2FD3;
-    --on-tertiary: #FFF;
-    --tertiary-container: #EFDBFF;
-    --on-tertiary-container: #2B0053;
-    --error: #BF0027;
-    --on-error: #FFF;
-    --error-container: #FFDAD8;
+    --tertiary: #7f2fd3;
+    --on-tertiary: #fff;
+    --tertiary-container: #efdbff;
+    --on-tertiary-container: #2b0053;
+    --error: #bf0027;
+    --on-error: #fff;
+    --error-container: #ffdad8;
     --on-error-container: #410007;
-    --background: #FEFCF4;
-    --on-background: #1B1C17;
+    --background: #fefcf4;
+    --on-background: #1b1c17;
     --surface: #f8eff3;
-    --on-surface: #1B1C17;
-    --outline: #7C757E;
-    --surface-variant: #E9DFEA;
-    --on-surface-variant: #4B454D;
-    --inverse-surface: #30312B;
-    --inverse-on-surface: #F3F1E8;
-    --active: #ff0000;
-    --font: "Graphik", "Roboto", sans-serif , system-ui, "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial";
+    --on-surface: #1b1c17;
+    --outline: #7c757e;
+    --surface-variant: #e9dfea;
+    --on-surface-variant: #4b454d;
+    --inverse-surface: #30312b;
+    --inverse-on-surface: #f3f1e8;
+    --font: 'Graphik', 'Roboto', sans-serif, system-ui, 'Segoe UI', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      'Helvetica', 'Arial';
   }
 }
