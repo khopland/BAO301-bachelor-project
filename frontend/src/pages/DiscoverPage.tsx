@@ -15,13 +15,13 @@ const description =
   'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas ducimus distinctio, maiores, vel suscipit neque animi velit natus libero exercitationem, dignissimos omnis perferendis voluptate sed autem. In eaque excepturi dolorem.'
 
 export type QueryBody = {
-  courseTypeId: string
-  categoryId: string
-  skillId: string
-  tagId: string
-  level: number
-  language: string
-  name: string
+  courseTypeId?: string
+  categoryId?: string
+  skillId?: string
+  tagId?: string
+  level?: number
+  language?: string
+  name?: string
 }
 
 export const DiscoverPage: React.FC = () => {
@@ -54,7 +54,7 @@ export const DiscoverPage: React.FC = () => {
 
       <aside className="col-span-2">
         <FilterMenu>
-          <FilterItems />
+          <FilterItems setQuery={setQuery} />
         </FilterMenu>
       </aside>
 
@@ -70,7 +70,7 @@ export const DiscoverPage: React.FC = () => {
 
         <CourseList>
           {isLoading ? <div>Loading...</div> : <></>}
-          {data != null && data.length >0 ? (
+          {data != null && data.length > 0 ? (
             data.map((course) => (
               <React.Fragment key={course.id}>
                 <CourseItem

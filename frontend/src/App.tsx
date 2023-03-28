@@ -24,7 +24,7 @@ const App: React.FC = () => (
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/course/:courseId" element={<CoursePage />} />
       </Routes>
-      <ReactQueryDevtools/>
+      {import.meta.env.DEV ? <ReactQueryDevtools /> : <></>}
     </QueryClientProvider>
   </BrowserRouter>
 )

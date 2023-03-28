@@ -1,15 +1,28 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 interface ChipProps {
   label: string
   icon?: string
+  selected?: boolean
+  onSelectChange?: (b: boolean) => void
 }
 
-export const Chip: React.FC<ChipProps> = ({ label, icon }) => {
-  const [isSelected, setSelected] = useState(false)
+export const Chip: React.FC<ChipProps> = ({
+  label,
+  icon,
+  selected = false,
+  onSelectChange,
+}) => {
+  const [isSelected, setSelected] = useState(selected)
   const handleClick = () => {
+    console.log(!isSelected)
     setSelected(!isSelected)
+    if (onSelectChange) onSelectChange(!isSelected)
   }
+
+  useEffect(() => {
+    setSelected(selected)
+  }, [selected])
 
   return (
     <div

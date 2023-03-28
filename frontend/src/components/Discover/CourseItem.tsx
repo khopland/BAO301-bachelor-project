@@ -38,7 +38,7 @@ const CourseItem: React.FC<CourseItemProps> = ({
           <div className="col-span-4">
             <img
               className="responsive rounded-r-none max-h-[10rem]"
-              alt='image of a woman'
+              alt="image of a woman"
               src={image}
             />
           </div>

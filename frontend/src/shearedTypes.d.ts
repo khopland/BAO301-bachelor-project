@@ -2,9 +2,9 @@ export type Chorse = {
   id: string
   name: string
   description: string
-  categories: Provider[]
-  skills: Provider[]
-  type: Provider
+  categories: Category[]
+  skills: Skill[]
+  type: ChorseType
   provider: Provider
   price: number
   tags: Tag[]
@@ -14,12 +14,28 @@ export type Chorse = {
   wbsCode: string
 }
 
-export type Provider = {
+export type Category = {
+  id: string
+  name: string
+  description: string
+}
+export type Skill = {
   id: string
   name: string
   description: string
 }
 
+export type ChorseType = {
+  id: string
+  name: string
+  description: string
+}
+
+export type Provider = {
+  id: string
+  name: string
+  description: string
+}
 export type Tag = {
   id: string
   name: string
