@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 const courseImage = 'src/components/Assets/course-illustration.jpg'
 
 interface CourseItemProps {
+  id: string
   title: string
   image: string
   description: string
@@ -13,6 +14,7 @@ interface CourseItemProps {
 }
 
 const CourseItem: React.FC<CourseItemProps> = ({
+  id,
   title,
   image,
   description,
@@ -36,13 +38,14 @@ const CourseItem: React.FC<CourseItemProps> = ({
           <div className="col-span-4">
             <img
               className="responsive rounded-r-none max-h-[10rem]"
+              alt="image of a woman"
               src={image}
             />
           </div>
           <div className="col-span-8 flex flex-col gap-1 py-2 pr-4 place-content-around">
             <Link
               className="justify-start text-lg font-semibold mt-1"
-              to="/course"
+              to={`/course/${id}`}
             >
               {title}
             </Link>

@@ -70,6 +70,8 @@ public class CourseRepository : ICourseRepository
 
         if (query.Language != null)
             queryable = queryable.Where(x => x.Language == query.Language);
+        if (query.Level != null)
+            queryable = queryable.Where(x => x.Level == query.Level);
 
         return await queryable
             .Include(x => x.Categories)
