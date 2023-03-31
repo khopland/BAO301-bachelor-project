@@ -1,4 +1,3 @@
-using api.Mappers;
 using api.Requests;
 using Core.Interfaces;
 using Mediator;
@@ -9,12 +8,10 @@ public class UserHandler : IRequestHandler<GetUserRequest, IResult>, IRequestHan
     IRequestHandler<GetAllUsersRequest, IResult>
 {
     private readonly IUserRepository _userRepository;
-    private readonly ApiMapper _mapper;
 
-    public UserHandler(IUserRepository userRepository, ApiMapper mapper)
+    public UserHandler(IUserRepository userRepository)
     {
         _userRepository = userRepository;
-        _mapper = mapper;
     }
 
     public async ValueTask<IResult> Handle(GetUserRequest request, CancellationToken cancellationToken)
@@ -28,7 +25,7 @@ public class UserHandler : IRequestHandler<GetUserRequest, IResult>, IRequestHan
         if (request.User == null)
             return Results.BadRequest();
 
-        return Results.Ok(await _userRepository.CreateUser(_mapper.PostUserToUser(request.User), cancellationToken));
+        return Results.Ok(await _userRepository.CreateUser(request.User, cancellationToken));
     }
 
     public async ValueTask<IResult> Handle(GetAllUsersRequest request, CancellationToken cancellationToken)

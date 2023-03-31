@@ -17,5 +17,5 @@ public class BachelorDbContext : DbContext
     public DbSet<Provider> Providers { get; set; } = default!;
     public DbSet<Tag> Tags { get; set; } = default!;
     public DbSet<Skill> Skills { get; set; } = default!;
-
+    
 }

@@ -22,25 +22,13 @@ namespace Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("CategoryCourse", b =>
-                {
-                    b.Property<Guid>("CategoriesId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("CoursesId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("CategoriesId", "CoursesId");
-
-                    b.HasIndex("CoursesId");
-
-                    b.ToTable("CategoryCourse");
-                });
-
             modelBuilder.Entity("Core.Models.Category", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("CourseId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Description")
@@ -51,6 +39,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
 
                     b.ToTable("Categories");
                 });
@@ -168,6 +158,9 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("CourseId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
@@ -180,6 +173,8 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CourseId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Skills");
@@ -191,11 +186,16 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("CourseId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
 
                     b.ToTable("Tags");
                 });
@@ -225,61 +225,23 @@ namespace Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("CourseSkill", b =>
+            modelBuilder.Entity("Core.Models.Category", b =>
                 {
-                    b.Property<Guid>("CoursesId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("SkillsId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("CoursesId", "SkillsId");
-
-                    b.HasIndex("SkillsId");
-
-                    b.ToTable("CourseSkill");
-                });
-
-            modelBuilder.Entity("CourseTag", b =>
-                {
-                    b.Property<Guid>("CoursesId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("TagsId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("CoursesId", "TagsId");
-
-                    b.HasIndex("TagsId");
-
-                    b.ToTable("CourseTag");
-                });
-
-            modelBuilder.Entity("CategoryCourse", b =>
-                {
-                    b.HasOne("Core.Models.Category", null)
-                        .WithMany()
-                        .HasForeignKey("CategoriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Core.Models.Course", null)
-                        .WithMany()
-                        .HasForeignKey("CoursesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Categories")
+                        .HasForeignKey("CourseId");
                 });
 
             modelBuilder.Entity("Core.Models.Course", b =>
                 {
                     b.HasOne("Core.Models.Provider", "Provider")
-                        .WithMany("Courses")
+                        .WithMany()
                         .HasForeignKey("ProviderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Core.Models.CourseType", "Type")
-                        .WithMany("Courses")
+                        .WithMany()
                         .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -310,49 +272,29 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Models.Skill", b =>
                 {
+                    b.HasOne("Core.Models.Course", null)
+                        .WithMany("Skills")
+                        .HasForeignKey("CourseId");
+
                     b.HasOne("Core.Models.User", null)
                         .WithMany("Skills")
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("CourseSkill", b =>
+            modelBuilder.Entity("Core.Models.Tag", b =>
                 {
                     b.HasOne("Core.Models.Course", null)
-                        .WithMany()
-                        .HasForeignKey("CoursesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Models.Skill", null)
-                        .WithMany()
-                        .HasForeignKey("SkillsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Tags")
+                        .HasForeignKey("CourseId");
                 });
 
-            modelBuilder.Entity("CourseTag", b =>
+            modelBuilder.Entity("Core.Models.Course", b =>
                 {
-                    b.HasOne("Core.Models.Course", null)
-                        .WithMany()
-                        .HasForeignKey("CoursesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Categories");
 
-                    b.HasOne("Core.Models.Tag", null)
-                        .WithMany()
-                        .HasForeignKey("TagsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+                    b.Navigation("Skills");
 
-            modelBuilder.Entity("Core.Models.CourseType", b =>
-                {
-                    b.Navigation("Courses");
-                });
-
-            modelBuilder.Entity("Core.Models.Provider", b =>
-                {
-                    b.Navigation("Courses");
+                    b.Navigation("Tags");
                 });
 
             modelBuilder.Entity("Core.Models.User", b =>

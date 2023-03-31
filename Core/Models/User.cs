@@ -7,6 +7,6 @@ public class User
     public string LastName { get; set; } = default!;
     public string? Position { get; set; }
     public string? Contact { get; set; }
-    public ICollection<Skill> Skills { get; set; } = new List<Skill>();
-    public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
+    public ICollection<Skill> Skills { get; set; } = default!;
+    public ICollection<Enrollment> Enrollments { get; set; } = default!;
 }
