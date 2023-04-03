@@ -1,4 +1,3 @@
-using System.Globalization;
 using Core.Interfaces;
 using Core.Models;
 using Infrastructure.Data;
@@ -20,10 +19,10 @@ public class CourseRepository : ICourseRepository
     {
         return await _dbContext.Courses
             .Include(x => x.Categories)
-            .Include(x=> x.Skills)
-            .Include(x=> x.Type)
-            .Include(x=> x.Provider)
-            .Include(x=> x.Tags)
+            .Include(x => x.Skills)
+            .Include(x => x.Type)
+            .Include(x => x.Provider)
+            .Include(x => x.Tags)
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
@@ -31,22 +30,30 @@ public class CourseRepository : ICourseRepository
     {
         return await _dbContext.Courses
             .Include(x => x.Categories)
-            .Include(x=> x.Skills)
-            .Include(x=> x.Type)
-            .Include(x=> x.Provider)
-            .Include(x=> x.Tags)
+            .Include(x => x.Skills)
+            .Include(x => x.Type)
+            .Include(x => x.Provider)
+            .Include(x => x.Tags)
             .ToListAsync(cancellationToken);
     }
 
     public async Task<Course> CreateCourse(Course course, CancellationToken cancellationToken = new())
     {
-        var res = await _dbContext.AddAsync(course, cancellationToken);
+        _dbContext.Providers.Attach(course.Provider);
+        _dbContext.CourseTypes.Attach(course.Type);
+        _dbContext.Categories.AttachRange(course.Categories);
+        _dbContext.Tags.AttachRange(course.Tags);
+        _dbContext.Skills.AttachRange(course.Skills);
+
+        var res = await _dbContext.Courses.AddAsync(course, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
+
         return res.Entity;
     }
 
-    public async Task<List<string>> GetLanguages(CancellationToken cancellationToken = new()){
-        return await _dbContext.Courses.Select(x =>x.Language).Distinct().ToListAsync(cancellationToken);
+    public async Task<List<string>> GetLanguages(CancellationToken cancellationToken = new())
+    {
+        return await _dbContext.Courses.Select(x => x.Language).Distinct().ToListAsync(cancellationToken);
     }
 
     public async Task<List<Course>> QueryCourses(CourseQuery query, CancellationToken cancellationToken = new())
@@ -75,10 +82,10 @@ public class CourseRepository : ICourseRepository
 
         return await queryable
             .Include(x => x.Categories)
-            .Include(x=> x.Skills)
-            .Include(x=> x.Type)
-            .Include(x=> x.Provider)
-            .Include(x=> x.Tags)
+            .Include(x => x.Skills)
+            .Include(x => x.Type)
+            .Include(x => x.Provider)
+            .Include(x => x.Tags)
             .ToListAsync(cancellationToken);
     }
 }
