@@ -45,6 +45,7 @@ public class UserRepository : IUserRepository
             .Include(x => x.Enrollments)
             .ThenInclude(x => x.Course)
             .ThenInclude(x => x.Provider)
+            .AsSplitQuery()
             .FirstOrDefaultAsync(x => x.Id == userId,
              cancellationToken);
     }

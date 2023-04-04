@@ -23,6 +23,7 @@ public class CourseRepository : ICourseRepository
             .Include(x => x.Type)
             .Include(x => x.Provider)
             .Include(x => x.Tags)
+            .AsSplitQuery()
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
@@ -34,6 +35,7 @@ public class CourseRepository : ICourseRepository
             .Include(x => x.Type)
             .Include(x => x.Provider)
             .Include(x => x.Tags)
+            .AsSplitQuery()
             .ToListAsync(cancellationToken);
     }
 
@@ -86,6 +88,7 @@ public class CourseRepository : ICourseRepository
             .Include(x => x.Type)
             .Include(x => x.Provider)
             .Include(x => x.Tags)
+            .AsSplitQuery()
             .ToListAsync(cancellationToken);
     }
 }
