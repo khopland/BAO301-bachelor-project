@@ -1,10 +1,10 @@
-export type Chorse = {
+export type Course = {
   id: string
   name: string
   description: string
   categories: Category[]
   skills: Skill[]
-  type: ChorseType
+  type: CourseType
   provider: Provider
   price: number
   tags: Tag[]
@@ -25,7 +25,7 @@ export type Skill = {
   description: string
 }
 
-export type ChorseType = {
+export type CourseType = {
   id: string
   name: string
   description: string
@@ -39,4 +39,21 @@ export type Provider = {
 export type Tag = {
   id: string
   name: string
+}
+
+export type Enrollment ={
+  id: string
+  user: string
+  course: Course
+  status: number
+  progress: string
+}
+export type User = {
+  id: string
+  firstName: string
+  lastName: string
+  position: string
+  contact: string
+  skills: Skill[]
+  enrollments: Enrollment[]
 }

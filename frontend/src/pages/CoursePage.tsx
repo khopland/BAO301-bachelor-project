@@ -7,7 +7,7 @@ import ProviderDescription from '../components/AboutCourse/ProviderDescription'
 import CourseHeader from '../components/AboutCourse/CourseHeader'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { Chorse } from '../shearedTypes'
+import { Course } from '../shearedTypes'
 
 const courseImage = '../src/components/Assets/course-illustration.jpg'
 const courseDescriptionLong =
@@ -16,7 +16,7 @@ const courseDescriptionLong =
 export const CoursePage: React.FC = () => {
   let params = useParams()
 
-  const { isLoading, error, data } = useQuery<Chorse>({
+  const { isLoading, error, data } = useQuery<Course>({
     queryKey: ['Course', params.courseId],
     queryFn: () =>
       fetch(`/api/course/${params.courseId}`).then((res) => res.json()),
