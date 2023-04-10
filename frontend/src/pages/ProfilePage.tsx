@@ -1,35 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import { FC, Fragment, useContext } from 'react'
 import { ProfileHeader } from '../components/Profile/ProfileHeader'
 import CourseList from '../components/Discover/CourseList'
 import CourseItem from '../components/Discover/CourseItem'
 import { Course, User } from '../shearedTypes'
 import { useQuery } from '@tanstack/react-query'
-
-const data: Course[] = [
-  {
-    id: 'test',
-    name: 'name',
-    description: 'string',
-    categories: [],
-    skills: [],
-    type: {
-      id: 'test',
-      description: '',
-      name: 'name',
-    },
-    provider: {
-      id: 'test',
-      description: '',
-      name: 'name',
-    },
-    price: 1,
-    tags: [],
-    level: 1,
-    language: 'string',
-    duration: 'string',
-    wbsCode: 'string',
-  },
-]
+import { userContext } from '../UserContext'
 
 const CourseSection = ({
   title,
@@ -42,7 +17,7 @@ const CourseSection = ({
     <h2 className="text-xl font-semibold mb-2">{title}</h2>
     <CourseList>
       {(courses ?? []).map((course) => (
-        <React.Fragment key={course.id}>
+        <Fragment key={course.id}>
           <CourseItem
             id={course.id}
             title={course.name}
@@ -61,27 +36,19 @@ const CourseSection = ({
             provider={course.provider.name}
             courseType={course.type.name}
           />
-        </React.Fragment>
+        </Fragment>
       ))}
     </CourseList>
   </section>
 )
 
-export const ProfilePage: React.FC = () => {
-  const [userId, setUserId] = useState('')
-
-  const userQuery = useQuery<User[]>({
-    queryKey: ['users'],
-    queryFn: () => fetch('/api/user').then((res) => res.json()),
-  })
-  useEffect(() => {
-    setUserId((userQuery.data ?? []).shift()?.id ?? '')
-  }, [userQuery.data])
+export const ProfilePage: FC = () => {
+  const { user } = useContext(userContext)
 
   const { data } = useQuery<User>({
-    queryKey: ['users', userId],
-    enabled: userId !== '',
-    queryFn: () => fetch(`/api/user/${userId}`).then((res) => res.json()),
+    queryKey: ['users', user?.id],
+    enabled: user?.id !== '',
+    queryFn: () => fetch(`/api/user/${user?.id}`).then((res) => res.json()),
   })
 
   return (

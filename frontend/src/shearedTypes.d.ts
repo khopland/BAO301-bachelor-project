@@ -19,6 +19,7 @@ export type Category = {
   name: string
   description: string
 }
+
 export type Skill = {
   id: string
   name: string
@@ -36,18 +37,28 @@ export type Provider = {
   name: string
   description: string
 }
+
 export type Tag = {
   id: string
   name: string
 }
 
-export type Enrollment ={
+export type Enrollment = {
+  id: string
+  user: User
+  course: Course
+  status: number
+  progress: string
+}
+
+export type userEnrollment = {
   id: string
   user: string
   course: Course
   status: number
   progress: string
 }
+
 export type User = {
   id: string
   firstName: string
@@ -55,5 +66,5 @@ export type User = {
   position: string
   contact: string
   skills: Skill[]
-  enrollments: Enrollment[]
+  enrollments: userEnrollment[]
 }
