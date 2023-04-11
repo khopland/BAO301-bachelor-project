@@ -99,8 +99,8 @@ export const CoursePage: React.FC = () => {
             <span>Add to my courses</span>
           </button>
         ) : EnrollmentQuery.data?.status !== 1 ? (
-          <button className="square round extend medium-elevate fixed right-10 bottom-10 bg-primary text-on-primary">
-            <i>add</i>
+          <button className="square round extend medium-elevate fixed right-10 bottom-10 bg-secondary text-on-secondary">
+            <i>check</i>
             <span>complete corse</span>
           </button>
         ) : (
