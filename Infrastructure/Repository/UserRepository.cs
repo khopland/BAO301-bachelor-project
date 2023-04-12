@@ -17,7 +17,9 @@ public class UserRepository : IUserRepository
 
     public async Task<List<User>> GetUsers(CancellationToken cancellationToken)
     {
-        return await _dbContext.Users.ToListAsync(cancellationToken);
+        return await _dbContext.Users
+            .OrderBy(x => x.Id)
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<User> CreateUser(User user, CancellationToken cancellationToken)

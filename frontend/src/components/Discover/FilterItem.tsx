@@ -4,7 +4,7 @@ import { Divider } from '@mui/material'
 import { Fragment, Dispatch, SetStateAction, useState, useEffect } from 'react'
 import { QueryBody } from '../../pages/DiscoverPage'
 import { useQuery } from '@tanstack/react-query'
-import { Category, ChorseType } from '../../shearedTypes'
+import { Category, CourseType } from '../../shearedTypes'
 
 var levels = ['Beginner', 'Intermediate', 'Expert']
 
@@ -17,7 +17,7 @@ const FilterItem = ({ setQuery }: FilterItemProps) => {
     queryKey: ['category'],
     queryFn: () => fetch('/api/category').then((res) => res.json()),
   })
-  const typeQuery = useQuery<ChorseType[]>({
+  const typeQuery = useQuery<CourseType[]>({
     queryKey: ['type'],
     queryFn: () => fetch('/api/type').then((res) => res.json()),
   })

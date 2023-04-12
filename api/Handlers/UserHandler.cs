@@ -6,15 +6,13 @@ using Mediator;
 namespace api.Handlers;
 
 public class UserHandler : IRequestHandler<GetUserRequest, IResult>, IRequestHandler<CreatUserRequest, IResult>,
-    IRequestHandler<GetAllUsersRequest, IResult>, IRequestHandler<AddCourseToUserRequest, IResult>
+    IRequestHandler<GetAllUsersRequest, IResult>
 {
     private readonly IUserRepository _userRepository;
-    private readonly ICourseRepository _courseRepository;
     private readonly ApiMapper _mapper;
-    public UserHandler(IUserRepository userRepository, ICourseRepository courseRepository, ApiMapper mapper)
+    public UserHandler(IUserRepository userRepository, ApiMapper mapper)
     {
         _userRepository = userRepository;
-        _courseRepository = courseRepository;
         _mapper = mapper;
     }
 
@@ -38,22 +36,5 @@ public class UserHandler : IRequestHandler<GetUserRequest, IResult>, IRequestHan
         var users = await _userRepository.GetUsers(cancellationToken);
 
         return Results.Ok(users.ConvertAll(u => _mapper.UserToDto(u)));
-    }
-
-    public async ValueTask<IResult> Handle(AddCourseToUserRequest request, CancellationToken cancellationToken)
-    {
-        var course = await _courseRepository.GetCourseById(request.CourseToUser.CourseId, cancellationToken);
-        if (course == null)
-        {
-            return Results.BadRequest($"cant find course with id:{request.CourseToUser.CourseId}");
-        }
-        var user = await _userRepository.GetUserById(request.CourseToUser.UserId, cancellationToken);
-        if (user == null)
-        {
-            return Results.BadRequest($"cant find user with id:{request.CourseToUser.CourseId}");
-        }
-        await _userRepository.AddEnrollmentToUser(user, course, cancellationToken);
-
-        return Results.Ok();
     }
 }

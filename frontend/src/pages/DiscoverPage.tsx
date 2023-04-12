@@ -8,7 +8,7 @@ import { Chip } from '../components/Common/Chip'
 import CourseItem from '../components/Discover/CourseItem'
 import { useQuery } from '@tanstack/react-query'
 import { useDebounce } from 'use-debounce'
-import { Chorse } from '../shearedTypes'
+import { Course } from '../shearedTypes'
 
 const title = 'Discover new courses'
 const description =
@@ -35,7 +35,7 @@ export const DiscoverPage: React.FC = () => {
     })
   }, [searchDebounced])
 
-  const { isLoading, error, data } = useQuery<Chorse[]>({
+  const { isLoading, error, data } = useQuery<Course[]>({
     queryKey: ['discovery', query],
     queryFn: () =>
       fetch('/api/course/query', {
