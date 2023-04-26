@@ -43,6 +43,16 @@ export const CoursePage: React.FC = () => {
       }),
     }).then((x) => (x.ok ? EnrollmentQuery.refetch() : null))
   }
+  const completeCourse = () => {
+    fetch('/api/enrollment/complete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userId: user?.id,
+        courseId: params.courseId,
+      }),
+    }).then((x) => (x.ok ? EnrollmentQuery.refetch() : null))
+  }
 
   if (isLoading) return <div>Loading...</div>
   if (error || !data) return <div>An error has occurred</div>
@@ -98,8 +108,8 @@ export const CoursePage: React.FC = () => {
             <i>add</i>
             <span>Add to my courses</span>
           </button>
-        ) : EnrollmentQuery.data?.status !== 1 ? (
-          <button className="square round extend medium-elevate fixed right-10 bottom-10 bg-secondary text-on-secondary">
+        ) : EnrollmentQuery.data?.status !== 2 ? (
+          <button className="square round extend medium-elevate fixed right-10 bottom-10 bg-secondary text-on-secondary" onClick={(e)=>{completeCourse()}}>
             <i>check</i>
             <span>complete corse</span>
           </button>
