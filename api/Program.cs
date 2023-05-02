@@ -88,6 +88,7 @@ group.MediatePost<PostQueryCourseRequest>("/course/query", "Course", typeof(List
 group.MediatePost<CreateCourseRequest>("/course", "Course", typeof(CourseDto));
 
 group.MediatePost<AddCourseToUserRequest>("/enrollment","Enrollment");
+group.MediatePost<CompleteEnrollmentRequest>("/enrollment/complete","Enrollment");
 group.MediateGet<GetEnrollmentByUserIdAndCourseId>("/enrollment","Enrollment",typeof(EnrollmentDto));
 
 app.Run();

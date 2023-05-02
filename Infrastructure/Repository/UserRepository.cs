@@ -1,4 +1,3 @@
-using Core;
 using Core.Interfaces;
 using Core.Models;
 using Infrastructure.Data;
@@ -49,17 +48,27 @@ public class UserRepository : IUserRepository
             .ThenInclude(x => x.Provider)
             .AsSplitQuery()
             .FirstOrDefaultAsync(x => x.Id == userId,
-             cancellationToken);
+                cancellationToken);
     }
 
     public async Task AddEnrollmentToUser(User user, Course course, CancellationToken cancellationToken)
     {
-
-        var enrollment = new Enrollment { User = user, Course = course, status = EnrollmentStatus.NOT_STARTED, Progress = TimeSpan.Zero };
+        var enrollment = new Enrollment { User = user, Course = course, status = EnrollmentStatus.STARTED, Progress = TimeSpan.Zero };
         user.Enrollments.Add(enrollment);
         _dbContext.Users.Update(user);
         await _dbContext.Enrollments.AddAsync(enrollment, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task CompleteEnrollmentForUser(Guid enrollmentId, CancellationToken cancellationToken)
+    {
+        var enrollment = await _dbContext.Enrollments.FirstOrDefaultAsync(x => x.Id == enrollmentId, cancellationToken);
+
+        if (enrollment == null)
+            return;
+
+        enrollment.status = EnrollmentStatus.COMPLETED;
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
 }
