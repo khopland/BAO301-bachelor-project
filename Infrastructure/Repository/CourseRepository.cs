@@ -77,13 +77,20 @@ public class CourseRepository : ICourseRepository
         if (query.SkillId != null)
             queryable = queryable.Where(x => x.Skills.Any(c => c.Id == query.SkillId));
 
-        if (query.TagId != null)
-            queryable = queryable.Where(x => x.Tags.Any(c => c.Id == query.TagId));
+        if (query.TagIds != null && query.TagIds.Count > 0)
+            queryable = queryable.Where(x => x.Tags.Any(c => query.TagIds.Contains(c.Id)));
+
+        if(query.price != null && query.price > 0.0m)
+                queryable = queryable.Where(x => x.Price >= query.price);
 
         if (query.Language != null)
             queryable = queryable.Where(x => x.Language == query.Language);
+
         if (query.Level != null)
             queryable = queryable.Where(x => x.Level == query.Level);
+
+        if((query.sortByPrice ?? false) == true)
+             queryable = queryable.OrderBy(x => x.Price);
 
         return await queryable
             .Include(x => x.Categories)
