@@ -8,6 +8,7 @@ import CoursePage from './pages/CoursePage'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { UserProvider } from './UserContext'
+import { NewCourse } from './pages/newCourse'
 
 const queryClient = new QueryClient()
 
@@ -24,6 +25,7 @@ const App: React.FC = () => (
           <Route path="/" element={<HomePage />} />
           <Route path="/discover" element={<DiscoverPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/course" element={<NewCourse />} />
           <Route path="/course/:courseId" element={<CoursePage />} />
         </Routes>
         {import.meta.env.DEV ? <ReactQueryDevtools /> : <></>}
