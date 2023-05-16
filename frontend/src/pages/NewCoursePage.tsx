@@ -11,6 +11,25 @@ import { useState } from 'react'
 import { StringFormElement } from '../components/Forms/StringFormElement'
 import { ListFormElement } from '../components/Forms/ListFormElement'
 import { NumberFormElement } from '../components/Forms/NumberFormElement'
+import { z } from 'zod'
+
+const formValidator = z
+.object({
+  name: z.string().min(3),
+  description: z.string().min(1),
+  level: z.number().min(1).max(3),
+  price: z.string().min(0),
+  duration: z.string().regex(new RegExp(/^[0-9]{1,}:[0-9]{2}:[0-9]{2}$/),"dose not match HH:MM:SS, ex. 0:10:00"),
+  language: z.string().min(1),
+  wbsCode: z.string().min(1),
+  provider: z.object({id: z.string()}),
+  categories: z.array(z.object({id: z.string()})),
+  type: z.object({id: z.string()}),
+  tags:  z.array(z.object({id: z.string()})),
+  skills: z.array(z.object({id: z.string()})),
+})
+
+
 
 export function NewCourse() {
   const [name, setName] = useState('')
@@ -25,6 +44,7 @@ export function NewCourse() {
   const [skill, setSkill] = useState('')
   const [tag, setTag] = useState('')
   const [provider, setProvider] = useState('')
+
 
   const categoryQuery = useQuery<Category[]>({
     queryKey: ['category'],
@@ -47,7 +67,7 @@ export function NewCourse() {
     queryFn: () => fetch('/api/tag').then((res) => res.json()),
   })
 
-  const mutation = useMutation<Course, void>({
+  const mutation = useMutation<Course, {message:string}>({
     mutationFn: async () => {
       const body = {
         name,
@@ -63,13 +83,15 @@ export function NewCourse() {
         tags: [{ id: tag }],
         skills: [{ id: skill }],
       }
-      const req = await fetch('/api/course', {
+      const req = await formValidator.parseAsync(body)
+
+      const res = await fetch('/api/course', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
+        body: JSON.stringify(req),
       })
 
-      return await req.json()
+      return await res.json()
     },
   })
 
@@ -160,7 +182,7 @@ export function NewCourse() {
             </div>
 
             {mutation.isSuccess && <h2>Success</h2>}
-            {mutation.isError && <h2>Failed</h2>}
+            {mutation.isError && <h2>Failed {mutation.error.message}</h2>}
           </div>
         </div>
       </div>
