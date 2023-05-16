@@ -8,7 +8,7 @@ import CoursePage from './pages/CoursePage'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { UserProvider } from './UserContext'
-import { NewCourse } from './pages/newCourse'
+import { NewCourse } from './pages/NewCoursePage'
 
 const queryClient = new QueryClient()
 
