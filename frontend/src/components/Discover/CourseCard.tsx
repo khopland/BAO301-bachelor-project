@@ -12,7 +12,6 @@ import {
 } from '@material-tailwind/react'
 import { Link } from 'react-router-dom'
 import ReadMoreLink from '../Common/ReadMoreLink'
-import CustomIcon from '../Common/CustomIcon'
 import { convertTimeFormat } from '../../utils'
 
 interface CourseCardProps {

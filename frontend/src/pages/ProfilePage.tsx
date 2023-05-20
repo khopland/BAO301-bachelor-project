@@ -61,28 +61,28 @@ export const ProfilePage: FC = () => {
         position={user?.position}
         img="src/components/Assets/course-illustration.jpg"
       />
-      <section className="grid grid-cols-4 gap-4">
-        <div className="bg-surface rounded-2xl flex flex-col gap-2 relative h-fit text-center p-7">
-          <Typography className="font-medium text-6xl">
+      <section className="grid grid-cols-3 gap-4 mx-auto w-fit container mt-[-5rem] md:mt-[-6rem]">
+        <div className="bg-secondary-container rounded-2xl flex flex-col gap-2 relative h-fit text-center p-5 md:p-7">
+          <Typography className="font-medium text-5xl md:text-6xl">
             {user?.enrollments.length}
           </Typography>
-          <Typography className="text-on-surface-variant font-medium text-base opacity-80">
+          <Typography className="text-on-surface-variant font-medium text-sm md:text-base opacity-80">
             Completed Courses
           </Typography>
         </div>
-        <div className="bg-surface rounded-2xl flex flex-col gap-2 relative h-fit text-center p-7">
-          <Typography className="font-medium text-6xl">
+        <div className="bg-secondary-container rounded-2xl flex flex-col gap-2 relative h-fit text-center p-5 md:p-7">
+          <Typography className="font-medium text-5xl md:text-6xl">
             {user?.interests.length}
           </Typography>
-          <Typography className="text-on-surface-variant font-medium text-base opacity-80">
+          <Typography className="text-on-surface-variant font-medium text-sm md:text-base opacity-80">
             Registered Interests
           </Typography>
         </div>
-        <div className="bg-surface rounded-2xl flex flex-col gap-2 relative h-fit text-center p-7">
-          <Typography className="font-medium text-6xl">
+        <div className="bg-secondary-container rounded-2xl flex flex-col gap-2 relative h-fit text-center p-5 md:p-7">
+          <Typography className="font-medium text-5xl md:text-6xl">
             {user?.skills.length}
           </Typography>
-          <Typography className="text-on-surface-variant font-medium text-base opacity-80">
+          <Typography className="text-on-surface-variant font-medium text-sm md:text-base opacity-80">
             Registered Skills
           </Typography>
         </div>
@@ -90,14 +90,14 @@ export const ProfilePage: FC = () => {
       {user?.enrollments && (
         <>
           <CourseSection
-            title="Active Courses"
+            title="Your Active Courses"
             courses={user.enrollments.reduce(
               (acc, val) => (val.status !== 2 ? acc.concat(val.course) : acc),
               [] as Course[]
             )}
           />
           <CourseSection
-            title="Completed Courses"
+            title="Your Completed Courses"
             courses={user.enrollments.reduce(
               (acc, val) => (val.status === 2 ? acc.concat(val.course) : acc),
               [] as Course[]
