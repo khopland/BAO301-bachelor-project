@@ -16,7 +16,7 @@ const InfoItem: FC<InfoItemProps> = ({ type, value, icon }) => {
         <span className="text-on-surface-variant font-medium text-xs opacity-80">
           {type}
         </span>
-        <p className="font-medium text-lg mt-[-5px]">{value}</p>
+        <p className="font-medium text-lg leading-5">{value}</p>
       </div>
     </div>
   )
