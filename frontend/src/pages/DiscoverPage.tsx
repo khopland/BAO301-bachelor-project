@@ -14,10 +14,12 @@ export type QueryBody = {
   courseTypeId?: string
   categoryId?: string
   skillId?: string
-  tagId?: string
+  tagIds?: string[]
   level?: number
+  price?: number
   language?: string
   name?: string
+  sortByPrice?: boolean
 }
 
 export const DiscoverPage: React.FC = () => {

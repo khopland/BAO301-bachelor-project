@@ -8,7 +8,7 @@ import {
 import { Fragment, Dispatch, SetStateAction, useState, useEffect } from 'react'
 import { QueryBody } from '../../pages/DiscoverPage'
 import { useQuery } from '@tanstack/react-query'
-import { Category, CourseType } from '../../sharedTypes'
+import { Category, CourseType, Tag } from '../../sharedTypes'
 
 var levels = ['Beginner', 'Intermediate', 'Expert']
 
@@ -25,10 +25,16 @@ const FilterItem = ({ setQuery }: FilterItemProps) => {
     queryKey: ['type'],
     queryFn: () => fetch('/api/type').then((res) => res.json()),
   })
+  const tagQuery = useQuery<Tag[]>({
+    queryKey: ['tag'],
+    queryFn: () => fetch('/api/tag').then((res) => res.json()),
+  })
 
   const [selectedCategory, setSelectedCategory] = useState<string>()
   const [selectedType, setSelectedType] = useState<string>()
   const [selectedLevel, setSelectedLevel] = useState<number>()
+  const [selectedTag, setSelectedTag] = useState<string>()
+  const [sortByPrice, setSortByPrice] = useState(false)
 
   useEffect(() => {
     setQuery((q) => {
@@ -37,13 +43,17 @@ const FilterItem = ({ setQuery }: FilterItemProps) => {
         categoryId: selectedCategory,
         courseTypeId: selectedType,
         level: selectedLevel,
+        tagIds: selectedTag ? [selectedTag] : [],
+        sortByPrice: sortByPrice,
       }
     })
-  }, [selectedCategory, selectedType, selectedLevel])
+  }, [selectedCategory, selectedType, selectedLevel, selectedTag, sortByPrice])
 
   const [isLevelOpen, setIsLevelOpen] = useState(true)
   const [isCategoryOpen, setIsCategoryOpen] = useState(true)
   const [isCourseTypeOpen, setIsCourseTypeOpen] = useState(true)
+  const [isTagOpen, setIsTagOpen] = useState(true)
+  const [isSortOpen, setIsSortOpen] = useState(true)
 
   type IconProps = {
     id: number
@@ -171,6 +181,70 @@ const FilterItem = ({ setQuery }: FilterItemProps) => {
           ) : (
             <></>
           )}
+        </AccordionBody>
+      </Accordion>
+
+      <Accordion
+        open={isTagOpen}
+        icon={<Icon id={3} open={isTagOpen ? 3 : 0} />}
+      >
+        <AccordionHeader
+          onClick={() => setIsTagOpen((prev) => !prev)}
+          className="py-1 text-on-secondary-container hover:text-on-secondary-container"
+        >
+          <h3 className="text-lg font-semibold mb-3">Tags</h3>
+        </AccordionHeader>
+        <AccordionBody className="grid grid-cols-1">
+          {tagQuery.data != null ? (
+            tagQuery.data.map((tag, i) => (
+              <Fragment key={tag.id + i}>
+                <Checkbox
+                  className="checked:bg-primary checked:border-primary checked:before:bg-primary border-on-primary-container p-0"
+                  containerProps={{
+                    className: 'mt-1',
+                  }}
+                  labelProps={{
+                    className:
+                      'text-sm font-semibold text-on-secondary-container capitalize',
+                  }}
+                  id={tag.id}
+                  label={tag.name}
+                  checked={selectedTag === tag.id}
+                  onChange={(e) =>
+                    setSelectedTag(e.target.checked ? tag.id : undefined)
+                  }
+                />
+              </Fragment>
+            ))
+          ) : (
+            <></>
+          )}
+        </AccordionBody>
+      </Accordion>
+
+      <Accordion
+        open={isSortOpen}
+        icon={<Icon id={3} open={isSortOpen ? 3 : 0} />}
+      >
+        <AccordionHeader
+          onClick={() => setIsSortOpen((prev) => !prev)}
+          className="py-1 text-on-secondary-container hover:text-on-secondary-container"
+        >
+          <h3 className="text-lg font-semibold mb-3">Ordering</h3>
+        </AccordionHeader>
+        <AccordionBody className="grid grid-cols-1">
+          <Checkbox
+            className="checked:bg-primary checked:border-primary checked:before:bg-primary border-on-primary-container p-0"
+            containerProps={{
+              className: 'mt-1',
+            }}
+            labelProps={{
+              className:
+                'text-sm font-semibold text-on-secondary-container capitalize',
+            }}
+            label="Order by Price"
+            onChange={(e) => setSortByPrice(e.target.checked)}
+          />
         </AccordionBody>
       </Accordion>
     </div>
