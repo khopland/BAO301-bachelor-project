@@ -4,7 +4,7 @@ import { NavItem } from './components/NavRail/NavItem'
 import { NavBar } from './components/NavBar/NavBar'
 import { HomePage } from './pages/Home/HomePage'
 import { DiscoverPage } from './pages/DiscoverPage'
-import { ProfilePage } from './pages/ProfilePage'
+import { ProfilePage } from './pages/Profile/ProfilePage'
 import CoursePage from './pages/CoursePage'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
@@ -33,6 +33,7 @@ const App: React.FC = () => (
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/course/:courseId" element={<CoursePage />} />
           </Routes>
+          <Footer />
         </UserProvider>
       </QueryClientProvider>
     </BrowserRouter>

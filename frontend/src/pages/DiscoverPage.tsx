@@ -90,7 +90,7 @@ export const DiscoverPage: React.FC = () => {
   }, [sortCourses, data])
 
   return (
-    <main className="container p-5 md:pl-[6rem] mx-auto md:grid-cols-7 grid grid-cols-1 gap-5 auto-rows-max h-[99vh] min-w-0 max-w-7xl relative">
+    <main className="container p-5 md:pl-[6rem] mx-auto md:grid-cols-7 grid grid-cols-1 gap-5 auto-rows-max min-w-0 max-w-7xl relative">
       <section className="md:col-span-7 rounded-2xl bg-surface text-on-primary-container p-4">
         <SearchBar search={searchString} setSearch={setSearchString} />
       </section>
