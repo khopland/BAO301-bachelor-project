@@ -20,10 +20,10 @@ import {
 } from '@material-tailwind/react'
 
 export type QueryBody = {
-  courseTypeId?: string
-  categoryId?: string
-  skillId?: string
-  tagId?: string
+  courseTypeIds?: string[]
+  categoryIds?: string[]
+  skillIds?: string[]
+  tagIds?: string[]
   level?: number
   language?: string
   name?: string

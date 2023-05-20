@@ -9,6 +9,7 @@ import { Fragment, Dispatch, SetStateAction, useState, useEffect } from 'react'
 import { QueryBody } from '../../pages/DiscoverPage'
 import { useQuery } from '@tanstack/react-query'
 import { Category, CourseType, Skill, Tag } from '../../sharedTypes'
+import { useLocation } from 'react-router'
 
 var levels = ['Beginner', 'Intermediate', 'Expert']
 
@@ -17,6 +18,13 @@ type FilterItemProps = {
 }
 
 const FilterItem = ({ setQuery }: FilterItemProps) => {
+  let { state }: { state: string } = useLocation()
+  useEffect(() => {
+    if (state !== null) {
+      setSelectedCategory([state])
+    }
+  }, [])
+
   const categoryQuery = useQuery<Category[]>({
     queryKey: ['category'],
     queryFn: () => fetch('/api/category').then((res) => res.json()),
