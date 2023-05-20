@@ -9,6 +9,7 @@ public class UserDto
     public string FirstName { get; set; } = default!;
     public string LastName { get; set; } = default!;
     public string? Position { get; set; }
+    public SegmentDto Segment { get; set; } = default!;
     public ContactDto Contact { get; set; } = default!;
     public ICollection<SkillDto> Skills { get; set; } = new List<SkillDto>();
     public ICollection<TagDto> Interests { get; set; } = new List<TagDto>();

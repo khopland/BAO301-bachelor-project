@@ -6,6 +6,7 @@ public class User
     public string FirstName { get; set; } = default!;
     public string LastName { get; set; } = default!;
     public string? Position { get; set; }
+    public Segment Segment { get; set; }
     public Contact Contact { get; set; }
     public ICollection<Skill> Skills { get; set; } = new List<Skill>();
     public ICollection<Tag> Interests { get; set; } = new List<Tag>();

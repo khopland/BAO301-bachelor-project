@@ -31,6 +31,7 @@ public class CourseRepository : ICourseRepository
     {
         return await _dbContext.Courses
             .Include(x => x.Categories)
+            .ThenInclude(x => x.Segment)
             .Include(x => x.Skills)
             .Include(x => x.Type)
             .Include(x => x.Provider)
