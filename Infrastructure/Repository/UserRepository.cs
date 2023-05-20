@@ -17,10 +17,19 @@ public class UserRepository : IUserRepository
     public async Task<List<User>> GetUsers(CancellationToken cancellationToken)
     {
         return await _dbContext.Users
+            .Include(u => u.Contact)
+            .Include(u => u.Skills)
+            .Include(u => u.Interests)
+            .Include(u => u.Enrollments)
+            .ThenInclude(e => e.Course)
+            .ThenInclude(c => c.Type)
+            .Include(u => u.Enrollments)
+            .ThenInclude(e => e.Course)
+            .ThenInclude(c => c.Provider)
             .OrderBy(x => x.Id)
             .ToListAsync(cancellationToken);
     }
-
+    
     public async Task<User> CreateUser(User user, CancellationToken cancellationToken)
     {
         var res = await _dbContext.AddAsync(user, cancellationToken);
@@ -34,6 +43,9 @@ public class UserRepository : IUserRepository
             .Include(x => x.Enrollments)
             .ThenInclude(x => x.Course)
             .ThenInclude(x => x.Categories)
+            .Include(x => x.Contact)
+            .Include(x => x.Skills)
+            .Include(x => x.Interests)
             .Include(x => x.Enrollments)
             .ThenInclude(x => x.Course)
             .ThenInclude(x => x.Skills)
@@ -53,22 +65,21 @@ public class UserRepository : IUserRepository
 
     public async Task AddEnrollmentToUser(User user, Course course, CancellationToken cancellationToken)
     {
-        var enrollment = new Enrollment { User = user, Course = course, status = EnrollmentStatus.STARTED, Progress = TimeSpan.Zero };
+        var enrollment = new Enrollment { User = user, Course = course, Status = EnrollmentStatus.STARTED, Progress = TimeSpan.Zero };
         user.Enrollments.Add(enrollment);
-        _dbContext.Users.Update(user);
-        await _dbContext.Enrollments.AddAsync(enrollment, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
     public async Task CompleteEnrollmentForUser(Guid enrollmentId, CancellationToken cancellationToken)
     {
         var enrollment = await _dbContext.Enrollments.FirstOrDefaultAsync(x => x.Id == enrollmentId, cancellationToken);
+        if (enrollment == null) return;
+        var course = await _dbContext.Courses.FirstOrDefaultAsync(x => x.Id == enrollment.Course.Id, cancellationToken);
+        if (course == null) return;
 
-        if (enrollment == null)
-            return;
-
-        enrollment.status = EnrollmentStatus.COMPLETED;
-
+        enrollment.Status = EnrollmentStatus.COMPLETED;
+        enrollment.Progress = course.Duration;
+        
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 }

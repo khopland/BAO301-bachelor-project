@@ -62,11 +62,14 @@ public class CourseRepository : ICourseRepository
     {
         var queryable = _dbContext.Courses.AsQueryable();
 
-        if (query.name != null)
-            queryable = queryable.Where(x => x.Name.ToLower().Contains(query.name.Trim().ToLower()));
+        if (query.Name != null)
+            queryable = queryable.Where(x => x.Name.ToLower().Contains(query.Name.Trim().ToLower()));
 
         if (query.CourseTypeId != null)
             queryable = queryable.Where(x => x.Type.Id == query.CourseTypeId);
+
+        if (query.SegmentId != null)
+            queryable = queryable.Where(x => x.Categories.Any(c => c.Segment.Id == query.SegmentId));
 
         if (query.CategoryId != null)
             queryable = queryable.Where(x => x.Categories.Any(c => c.Id == query.CategoryId));

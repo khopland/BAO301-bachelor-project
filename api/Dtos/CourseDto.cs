@@ -7,7 +7,7 @@ public class CourseDto
     public string? Description { get; set; }
     public List<CategoryDto> Categories { get; set; } = new();
     public List<SkillDto> Skills { get; set; } = new();
-    public TypeDto Type { get; set; } =default!;
+    public TypeDto Type { get; set; } = default!;
     public ProviderDto Provider { get; set; } = default!;
     public decimal Price { get; set; }
     public List<TagDto> Tags { get; set; } = new ();
