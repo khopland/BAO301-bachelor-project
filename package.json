@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "i18n-iso-countries": "^7.6.0",
+    "react-world-flags": "^1.5.1",
+    "unsplash-js": "^7.0.18"
+  },
+  "devDependencies": {
+    "@types/react-world-flags": "^1.4.2"
+  }
+}
