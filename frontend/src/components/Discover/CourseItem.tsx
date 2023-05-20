@@ -1,6 +1,12 @@
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Typography,
+} from '@material-tailwind/react'
 import { Link } from 'react-router-dom'
-
-const courseImage = 'src/components/Assets/course-illustration.jpg'
+import { convertTimeFormat } from '../../utils'
+import ReadMore from '../Common/ReadMore'
 
 interface CourseItemProps {
   id: string
@@ -25,60 +31,70 @@ const CourseItem: React.FC<CourseItemProps> = ({
 }) => {
   return (
     <>
-      <article className="m-0 p-0 no-elevate ease-in-out duration-300 relative">
-        <button className="absolute top-5 right-0 z-10 text-on-surface-variant circle">
-          <i>more_vert</i>
-          <div className="dropdown right no-wrap bg-background">
-            <a>Item 1</a>
-            <a>Item 2</a>
-            <a>Item 3</a>
-          </div>
-        </button>
-        <div className="grid bg-background drop-shadow-sm">
-          <div className="col-span-4">
-            <img
-              className="responsive rounded-r-none max-h-[10rem]"
-              alt="image of a woman"
-              src={image}
-            />
-          </div>
-          <div className="col-span-8 flex flex-col gap-1 py-2 pr-4 place-content-around">
-            <Link
-              className="justify-start text-lg font-semibold mt-1"
-              to={`/course/${id}`}
+      <Card className="flex-row !bg-background">
+        <CardHeader
+          shadow={false}
+          floated={false}
+          className="w-1/5 shrink-0 m-0 rounded-r-none hidden md:inline-block"
+        >
+          <img
+            src={`./src/components/assets/${image
+              .toLowerCase()
+              .replace(/ /g, '_')}.webp`}
+            alt="image"
+            className="w-full h-full object-cover"
+          />
+        </CardHeader>
+        <CardBody>
+          <Link to={`/course/${id}`}>
+            <Typography
+              variant="h5"
+              className="mb-2 text-on-secondary-container"
             >
               {title}
-            </Link>
-            <p className="text-xs">{description}</p>
-            <div className="flex gap-3">
-              <p className="my-2 flex items-center gap-1">
-                <i className="small opacity-80">schedule</i>
-                <span className="text-xs font-medium text-on-surface-variant self-center">
-                  {duration}
-                </span>
-              </p>
-              <p className="my-2 flex items-center gap-1">
-                <i className="small opacity-80">bar_chart</i>
-                <span className="text-xs font-medium text-on-surface-variant self-center">
-                  {level}
-                </span>
-              </p>
-              <p className="my-2 flex items-center gap-1">
-                <i className="small opacity-80">storefront</i>
-                <span className="text-xs font-medium text-on-surface-variant self-center">
-                  {provider}
-                </span>
-              </p>
-              <p className="my-2 flex items-center gap-1">
-                <i className="small opacity-80">devices</i>
-                <span className="text-xs font-medium text-on-surface-variant self-center">
-                  {courseType}
-                </span>
-              </p>
-            </div>
+            </Typography>
+          </Link>
+
+          <ReadMore limit={120} className="mb-4 text-sm">
+            {description}
+          </ReadMore>
+
+          <div className="flex gap-3 flex-wrap">
+            <p className=" flex items-center gap-1">
+              <i className="material-icons text-on-primary-container">
+                schedule
+              </i>
+              <span className="text-xs font-medium text-on-surface-variant self-center">
+                {convertTimeFormat(duration)}
+              </span>
+            </p>
+            <p className="flex items-center gap-1">
+              <i className="material-icons text-on-primary-container">
+                bar_chart
+              </i>
+              <span className="text-xs font-medium text-on-surface-variant self-center">
+                {level}
+              </span>
+            </p>
+            <p className="flex items-center gap-1">
+              <i className="material-icons text-on-primary-container">
+                storefront
+              </i>
+              <span className="text-xs font-medium text-on-surface-variant self-center">
+                {provider}
+              </span>
+            </p>
+            <p className="flex items-center gap-1">
+              <i className="material-icons text-on-primary-container">
+                devices
+              </i>
+              <span className="text-xs font-medium text-on-surface-variant self-center">
+                {courseType}
+              </span>
+            </p>
           </div>
-        </div>
-      </article>
+        </CardBody>
+      </Card>
     </>
   )
 }

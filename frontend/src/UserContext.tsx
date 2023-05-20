@@ -1,5 +1,5 @@
-import { FC, createContext, useEffect, useState } from 'react'
-import { User } from './shearedTypes'
+import { createContext, useEffect, useState } from 'react'
+import { User } from './sharedTypes'
 import { useQuery } from '@tanstack/react-query'
 
 type UserContext = {
