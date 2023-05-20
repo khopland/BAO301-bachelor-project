@@ -1,5 +1,4 @@
 import { ReactNode, FC } from 'react'
-import 'beercss'
 interface CoursesProps {
   children: ReactNode
 }
@@ -7,7 +6,7 @@ interface CoursesProps {
 const CourseList: FC<CoursesProps> = ({ children }) => {
   return (
     <>
-      <div className="flex flex-col">{children}</div>
+      <div className="flex flex-col gap-5">{children}</div>
     </>
   )
 }

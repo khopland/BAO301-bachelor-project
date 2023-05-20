@@ -25,6 +25,7 @@ builder.Services.AddDbContext<BachelorDbContext>(o =>
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddScoped<ISegmentRepository, SegmentRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ISkillRepository, SkillRepository>();
 builder.Services.AddScoped<ICourseTypeRepository, CourseTypeRepository>();
@@ -72,6 +73,8 @@ group.MapGet("/hello", () => Results.Json(new { text = "Hello from server!!" }))
 group.MediateGet<GetUserRequest>("/user/{userId:guid}", "User", typeof(UserDto));
 group.MediateGet<GetAllUsersRequest>("/user", "User", typeof(List<UserDto>));
 group.MediatePost<CreatUserRequest>("/user", "User", typeof(UserDto));
+
+group.MediateGet<GetSegmentsRequest>("/segment", "Segment", typeof(List<SegmentDto>));
 
 group.MediateGet<GetCategoriesRequest>("/category", "Category", typeof(List<CategoryDto>));
 group.MediatePost<CreateCategoryRequest>("/category", "Category", typeof(CategoryDto));

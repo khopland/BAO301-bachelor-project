@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import 'beercss'
 import InfoItem from '../components/AboutCourse/InfoItem'
 import AboutCourse from '../components/AboutCourse/AboutCourse'
 import CourseDescription from '../components/AboutCourse/CourseDescription'
@@ -7,14 +6,13 @@ import ProviderDescription from '../components/AboutCourse/ProviderDescription'
 import CourseHeader from '../components/AboutCourse/CourseHeader'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { Course, Enrollment } from '../shearedTypes'
+import { Course, Enrollment } from '../sharedTypes'
 import { userContext } from '../UserContext'
+import { Button } from '@material-tailwind/react'
+import { convertTimeFormat } from '../utils'
 
-const courseImage = '../src/components/Assets/course-illustration.jpg'
 const courseDescriptionLong =
-  'Learn how to implement Azure compute solutions, create Azure Functions, implement and manage web apps, develop solutions utilizing Azure storage, implement authentication and authorization, and secure their solutions by using KeyVault and Managed Identities. Students will also learn how to connect to and consume Azure services and third-party services, and include event- and message-based models in their solutions. The course also covers monitoring, troubleshooting, and optimizing Azure solutions. Audience Profile Students in this course are interested in Azure development or in passing the Microsoft Azure Developer Associate certification exam.'
-
-  
+  'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sunt magnam ipsum fugit illum ipsa! Totam labore, obcaecati iure corporis, rerum provident delectus reprehenderit repellendus velit ipsa inventore? Magnam atque error cum dolorem, eaque provident suscipit quidem, nesciunt perspiciatis minima praesentium autem sed quam harum itaque nisi ipsa rerum earum! Nobis.'
 export const CoursePage: React.FC = () => {
   const params = useParams()
   const { user } = useContext(userContext)
@@ -59,19 +57,23 @@ export const CoursePage: React.FC = () => {
 
   return (
     <>
-      <main className="ml-[5rem] p-5 grid grid-cols-7 gap-5 auto-rows-max h-[99vh] w-100 relative">
-        <header className="flex gap-5 col-span-7 bg-transparent p-0">
+      <main className="mx-auto md:ml-[5rem] p-5 grid grid-cols-1 md:grid-cols-7 gap-5 auto-rows-max h-[99vh] w-100 relative">
+        <header className="flex gap-5 md:col-span-7 bg-transparent p-0">
           <CourseHeader
             title={data.name}
             description={data.description}
-            image={courseImage}
+            image={data.categories[0].name}
           />
         </header>
 
-        <aside className="col-span-2">
+        <aside className="md:col-span-2">
           <AboutCourse>
             <InfoItem type="Type" value={data.type.name} icon="devices" />
-            <InfoItem type="Duration" value={data.duration} icon="schedule" />
+            <InfoItem
+              type="Duration"
+              value={convertTimeFormat(data.duration)}
+              icon="schedule"
+            />
             <InfoItem type="Language" value={data.language} icon="language" />
             <InfoItem
               type="Level"
@@ -99,28 +101,46 @@ export const CoursePage: React.FC = () => {
           </AboutCourse>
         </aside>
 
-        <section className="col-start-3 col-end-8 flex flex-col gap-5">
-          <CourseDescription description={courseDescriptionLong} />
+        <section className="md:col-start-3 md:col-end-8 flex flex-col gap-5">
+          <CourseDescription
+            description={data.description + courseDescriptionLong}
+          />
           <ProviderDescription description={data.provider.description} />
         </section>
         {EnrollmentQuery.data == null ? (
-          <button className="square round extend medium-elevate fixed right-10 bottom-10 bg-primary text-on-primary" onClick={(e)=>{addCourse()}}>
-            <i>add</i>
-            <span>Add to my courses</span>
-          </button>
+          <div className="fixed right-10 bottom-10">
+            <Button
+              className="flex items-center gap-3 bg-primary-container hover:shadow-primary-container shadow-primary-container text-on-primary-container"
+              onClick={(e) => {
+                addCourse()
+              }}
+            >
+              <i className="material-icons-round text-xl">library_add</i> Add to
+              My Courses
+            </Button>
+          </div>
         ) : EnrollmentQuery.data?.status !== 2 ? (
-          <button className="square round extend medium-elevate fixed right-10 bottom-10 bg-secondary text-on-secondary" onClick={(e)=>{completeCourse()}}>
-            <i>check</i>
-            <span>complete corse</span>
-          </button>
+          <div className="fixed right-10 bottom-10">
+            <Button
+              className="flex items-center gap-3 bg-primary-container hover:shadow-primary-container shadow-primary-container text-on-primary-container"
+              onClick={(e) => {
+                completeCourse()
+              }}
+            >
+              <i className="material-icons-round text-xl">library_add_check</i>{' '}
+              Marks as completed
+            </Button>
+          </div>
         ) : (
-          <button
-            disabled
-            className="square round extend medium-elevate fixed right-10 bottom-10 bg-on-surface-variant text-primary"
-          >
-            <i>check</i>
-            <span>corse is completed</span>
-          </button>
+          <div className="fixed right-10 bottom-10">
+            <Button
+              disabled
+              className="flex items-center gap-3 bg-primary-container hover:shadow-primary-container shadow-primary-container text-on-primary-container"
+            >
+              <i className="material-icons-round text-xl">library_add_check</i>
+              Course completed
+            </Button>
+          </div>
         )}
       </main>
     </>

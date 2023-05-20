@@ -9,6 +9,7 @@ namespace api.Mappers;
 public partial class ApiMapper
 {
     public partial CourseDto CourseToDto(Course car);
+    public partial ContactDto ContactToDto(Contact contact);
     public partial User PostUserToUser(PostUser user);
     public partial UserDto UserToDto(User user);
     public partial EnrollmentDto EnrollmentToDto(Enrollment enrollment);

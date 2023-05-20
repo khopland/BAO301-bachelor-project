@@ -1,3 +1,4 @@
+import { Typography } from '@material-tailwind/react'
 import { ReactNode, FC } from 'react'
 
 interface FilterMenuProps {
@@ -7,13 +8,13 @@ interface FilterMenuProps {
 const FilterMenu: FC<FilterMenuProps> = ({ children }) => {
   return (
     <>
-      <section className="rounded-2xl no-elevate bg-surface text-on-primary-container flex flex-col  px-7 py-7">
-        <h2 className="text-xl font-semibold mb-2">Filters</h2>
-        <p className="text-xs">
-          Not finding what you’re looking for? Try applying some filters to
+      <section className="rounded-2xl no-elevate bg-surface text-on-primary-container flex flex-col px-5 pb-5 pt-0 md:pt-5">
+        <Typography variant="h4">Filters</Typography>
+        <Typography variant="small">
+          Not finding what you're looking for? Try applying some filters to
           narrow it down!
-        </p>
-        <div className="flex flex-col gap-7">{children}</div>
+        </Typography>
+        <div className="flex flex-col">{children}</div>
       </section>
     </>
   )

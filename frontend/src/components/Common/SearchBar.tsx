@@ -1,3 +1,4 @@
+import { Input } from '@material-tailwind/react'
 import { Dispatch, FC, SetStateAction } from 'react'
 
 type SearchBarProps = {
@@ -8,20 +9,22 @@ type SearchBarProps = {
 export const SearchBar: FC<SearchBarProps> = ({ setSearch, search }) => {
   return (
     <>
-      <div className="field label border round fill large m-0 before:bg-surface">
-        <input
-          type="text font-medium"
-          value={search}
-          onChange={(e) => {
-            e.preventDefault()
-            setSearch(e.target.value)
-          }}
-        />
-        <label className="text-s text-on-surface-variant opacity-50">
-          What do you want to learn?
-        </label>
-        <i>search</i>
-      </div>
+      <Input
+        label="What do you want to learn?"
+        onChange={(e) => {
+          e.preventDefault()
+          setSearch(e.target.value)
+        }}
+        icon={
+          <span className="material-icons-round text-on-surface">search</span>
+        }
+        size="lg"
+        color="deep-purple"
+        className="!bg-background "
+        containerProps={{
+          className: 'bg-surface !text-on-primary-container',
+        }}
+      />
     </>
   )
 }

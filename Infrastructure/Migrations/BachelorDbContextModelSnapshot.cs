@@ -50,9 +50,55 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid>("SegmentId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("SegmentId");
+
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("Core.Models.Contact", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Contacts");
                 });
 
             modelBuilder.Entity("Core.Models.Course", b =>
@@ -129,11 +175,11 @@ namespace Infrastructure.Migrations
                     b.Property<TimeSpan>("Progress")
                         .HasColumnType("interval");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
-
-                    b.Property<int>("status")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -160,6 +206,24 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Providers");
+                });
+
+            modelBuilder.Entity("Core.Models.Segment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Segments");
                 });
 
             modelBuilder.Entity("Core.Models.Skill", b =>
@@ -195,7 +259,12 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Tags");
                 });
@@ -205,9 +274,6 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
-
-                    b.Property<string>("Contact")
-                        .HasColumnType("text");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -270,6 +336,26 @@ namespace Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Core.Models.Category", b =>
+                {
+                    b.HasOne("Core.Models.Segment", "Segment")
+                        .WithMany("Categories")
+                        .HasForeignKey("SegmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Segment");
+                });
+
+            modelBuilder.Entity("Core.Models.Contact", b =>
+                {
+                    b.HasOne("Core.Models.User", null)
+                        .WithOne("Contact")
+                        .HasForeignKey("Core.Models.Contact", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Core.Models.Course", b =>
                 {
                     b.HasOne("Core.Models.Provider", "Provider")
@@ -315,6 +401,13 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("UserId");
                 });
 
+            modelBuilder.Entity("Core.Models.Tag", b =>
+                {
+                    b.HasOne("Core.Models.User", null)
+                        .WithMany("Interests")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("CourseSkill", b =>
                 {
                     b.HasOne("Core.Models.Course", null)
@@ -355,9 +448,19 @@ namespace Infrastructure.Migrations
                     b.Navigation("Courses");
                 });
 
+            modelBuilder.Entity("Core.Models.Segment", b =>
+                {
+                    b.Navigation("Categories");
+                });
+
             modelBuilder.Entity("Core.Models.User", b =>
                 {
+                    b.Navigation("Contact")
+                        .IsRequired();
+
                     b.Navigation("Enrollments");
+
+                    b.Navigation("Interests");
 
                     b.Navigation("Skills");
                 });

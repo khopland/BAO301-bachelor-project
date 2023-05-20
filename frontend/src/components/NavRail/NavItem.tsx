@@ -1,23 +1,30 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import 'beercss';
-
+import React from 'react'
+import { NavLink, useMatch } from 'react-router-dom'
+import { ListItem, ListItemPrefix } from '@material-tailwind/react'
 interface NavItemProps {
-  icon: string;
-  label: string;
-  route: string;
+  icon: string
+  label: string
+  route: string
 }
 
 export const NavItem: React.FC<NavItemProps> = ({ icon, label, route }) => {
+  const isActive = useMatch(route)
   return (
-    <>
-    <NavLink
-      to={route}
-      className={({ isActive }) => `${ isActive ? 'active' : 'text-current'} relative group`}>
-        <i className='text-transparent wave h-7'>{icon}</i>
-        <i className='bg-transparent absolute top-[1px] left-50 transform transition-transform group-hover:scale-[105%]'>{icon}</i>
-        <span className='font-medium'>{label}</span>
+    <NavLink to={route}>
+      <ListItem
+        className={`flex flex-col w-14 rounded-3xl py-1.5
+        hover:bg-gray-200 hover:bg-opacity-80 hover:bg-surface-variant
+        focus:bg-secondary-container focus:text-blue-gray-900
+        active:bg-secondary-container active:bg-opacity-100 active:text-on-surface-variant
+        ${isActive ? 'bg-secondary-container text-on-surface-variant' : ''}`}
+      >
+        <ListItemPrefix className="m-0">
+          <span className="material-icons-round">{icon}</span>
+        </ListItemPrefix>
+      </ListItem>
+      <p className={`text-xs mt-1 ${isActive ? 'text-inverse-variant' : ''}`}>
+        {label}
+      </p>
     </NavLink>
-    </>
-  );
-};
+  )
+}

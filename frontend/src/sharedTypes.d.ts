@@ -14,6 +14,13 @@ export type Course = {
   wbsCode: string
 }
 
+export type Segment = {
+  id: string
+  name: string
+  description: string
+  categories: Category[]
+}
+
 export type Category = {
   id: string
   name: string
@@ -58,13 +65,22 @@ export type userEnrollment = {
   status: number
   progress: string
 }
-
+export type Contact = {
+  id: string
+  address: string
+  city: string
+  country: string
+  zipcode: string
+  phone: string
+  email: string
+}
 export type User = {
   id: string
   firstName: string
   lastName: string
   position: string
-  contact: string
+  contact: Contact
   skills: Skill[]
+  interests: Tag[]
   enrollments: userEnrollment[]
 }

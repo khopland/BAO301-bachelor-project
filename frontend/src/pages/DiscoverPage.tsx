@@ -4,15 +4,11 @@ import FilterMenu from '../components/Discover/FilterMenu'
 import FilterItems from '../components/Discover/FilterItem'
 import CourseList from '../components/Discover/CourseList'
 import { SearchBar } from '../components/Common/SearchBar'
-import { Chip } from '../components/Common/Chip'
 import CourseItem from '../components/Discover/CourseItem'
 import { useQuery } from '@tanstack/react-query'
 import { useDebounce } from 'use-debounce'
-import { Course } from '../shearedTypes'
-
-const title = 'Discover new courses'
-const description =
-  'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas ducimus distinctio, maiores, vel suscipit neque animi velit natus libero exercitationem, dignissimos omnis perferendis voluptate sed autem. In eaque excepturi dolorem.'
+import { Course } from '../sharedTypes'
+import { Button, Drawer, Spinner, Typography } from '@material-tailwind/react'
 
 export type QueryBody = {
   courseTypeId?: string
@@ -27,7 +23,11 @@ export type QueryBody = {
 export const DiscoverPage: React.FC = () => {
   const [query, setQuery] = useState<QueryBody>({} as QueryBody)
   const [searchString, setSearchString] = useState('')
+  const [openRight, setOpenRight] = useState(false)
   const [searchDebounced] = useDebounce(searchString, 300)
+
+  const openDrawerRight = () => setOpenRight(true)
+  const closeDrawerRight = () => setOpenRight(false)
 
   useEffect(() => {
     setQuery((q) => {
@@ -47,36 +47,58 @@ export const DiscoverPage: React.FC = () => {
   })
 
   return (
-    <main className="ml-[5rem] p-5 grid grid-cols-7 gap-5 auto-rows-max h-[99vh] w-100 relative">
-      <header className="gap-5 col-span-7 bg-transparent p-0">
-        <DiscoverHeader title={title} description={description} />
-      </header>
+    <main className="container p-5 md:pl-[6rem] mx-auto md:grid-cols-7 grid grid-cols-1 gap-5 auto-rows-max h-[99vh] min-w-0 max-w-7xl relative">
+      <section className="md:col-span-7 rounded-2xl bg-surface text-on-primary-container p-4">
+        <SearchBar search={searchString} setSearch={setSearchString} />
+      </section>
+      <section className="fixed right-2 bottom-10 z-10">
+        <Button
+          color="deep-purple"
+          className="md:hidden flex items-center gap-4 rounded-3xl bg-primary-container hover:shadow-primary-container text-on-primary-container"
+          onClick={openDrawerRight}
+        >
+          <i className="material-icons-round h-5 w-5">filter_list</i>
+          <p className="mt-.5">Filters</p>
+        </Button>
+      </section>
 
-      <aside className="col-span-2">
+      <aside className="md:col-span-2 hidden md:block">
         <FilterMenu>
           <FilterItems setQuery={setQuery} />
         </FilterMenu>
       </aside>
 
-      <section className="col-start-3 col-end-8 rounded-2xl no-elevate bg-surface text-on-primary-container flex flex-col gap-3 px-7 py-7">
-        <SearchBar search={searchString} setSearch={setSearchString} />
-        <div className="flex flex-wrap gap-2 px-5">
-          <Chip label="A chip" icon="done" />
-          <Chip label="A chip" icon="done" />
-          <Chip label="A chip" icon="done" />
-          <Chip label="A chip" icon="done" />
-          <Chip label="A chip" icon="done" />
-        </div>
+      <Drawer
+        placement="right"
+        open={openRight}
+        onClose={closeDrawerRight}
+        className="md:hidden bg-surface overflow-y-auto rounded-tl-2xl rounded-bl-2xl py-4"
+        overlayProps={{ className: 'md:hidden fixed' }}
+      >
+        <section className="sticky flex flex-row-reverse mr-5 bg-surface">
+          <Button
+            className="md:hidden flex items-center bg-transparent shadow-none text-on-primary-container p-2
+          hover:shadow-none hover:bg-gray-500 hover:bg-opacity-20 rounded-full mb-0"
+            onClick={closeDrawerRight}
+          >
+            <i className="material-icons-round rotate-180">menu_open</i>
+          </Button>
+        </section>
+        <FilterMenu>
+          <FilterItems setQuery={setQuery} />
+        </FilterMenu>
+      </Drawer>
 
+      <section className="md:col-start-3 md:col-end-8 rounded-2xl no-elevate bg-surface text-on-primary-container flex flex-col gap-3 px-7 py-7">
         <CourseList>
-          {isLoading ? <div>Loading...</div> : <></>}
+          {isLoading ? <Spinner className="h-12 w-12" /> : <></>}
           {data != null && data.length > 0 ? (
             data.map((course) => (
               <React.Fragment key={course.id}>
                 <CourseItem
                   id={course.id}
                   title={course.name}
-                  image={'src/components/Assets/course-illustration.jpg'}
+                  image={course.categories[0].name}
                   description={course.description}
                   duration={course.duration}
                   level={
@@ -94,7 +116,7 @@ export const DiscoverPage: React.FC = () => {
               </React.Fragment>
             ))
           ) : (
-            <>No Contnet</>
+            <>Sorry, no courses matched your search.</>
           )}
         </CourseList>
       </section>
