@@ -5,6 +5,6 @@ namespace api.Requests;
 
 public class AddCourseToUserRequest : IHttpRequest
 {
-    [FromBody] 
-    public AddCourseToUser CourseToUser { get; set; }
+    [FromBody]
+    public AddCourseToUser CourseToUser { get; set; } = default!;
 }

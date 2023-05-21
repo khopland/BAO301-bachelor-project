@@ -1,4 +1,3 @@
-using api.Mappers;
 using api.Requests;
 using Core.Interfaces;
 using Mediator;
@@ -14,6 +13,6 @@ public class ProviderHandler : IRequestHandler<GetProvidersRequest, IResult>
     }
     public async ValueTask<IResult> Handle(GetProvidersRequest request, CancellationToken cancellationToken)
     {
-        return Results.Ok(await _providerRepository.GetAllProviders());
+        return Results.Ok(await _providerRepository.GetAllProviders(cancellationToken));
     }
 }

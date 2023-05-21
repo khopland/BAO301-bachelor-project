@@ -19,12 +19,12 @@ public class BachelorDbContext : DbContext
     public DbSet<Provider> Providers { get; set; } = default!;
     public DbSet<Tag> Tags { get; set; } = default!;
     public DbSet<Skill> Skills { get; set; } = default!;
-    
+
     public DbSet<Contact> Contacts { get; set; } = default!;
 
     public void SeedData()
     {
-        
+
         var strategyAndConsultingSegment = new Segment
         {
             Id = Guid.NewGuid(),
@@ -334,8 +334,8 @@ public class BachelorDbContext : DbContext
             new () { Id = Guid.NewGuid(), Name = "Workshop", Description = "Workshop courses are instructor-led and must be attended in-person." },
             new () { Id = Guid.NewGuid(), Name = "Case Study", Description = "Case Study courses are self-paced and can be read at any time." },
             new () { Id = Guid.NewGuid(), Name = "Simulation", Description = "Simulation courses are self-paced and can be completed at any time." },
-        }; 
-        
+        };
+
         var users = new List<User>
         {
             new()
@@ -457,7 +457,7 @@ public class BachelorDbContext : DbContext
                 Duration = faker.Date.Timespan(new TimeSpan(12, 0, 0)),
                 WbsCode = faker.Random.String2(3).ToUpper() + faker.Random.Int(10, 99)
             },
-            
+
             new()
             {
                 Id = Guid.NewGuid(),

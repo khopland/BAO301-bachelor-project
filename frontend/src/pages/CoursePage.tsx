@@ -116,6 +116,7 @@ export const CoursePage: React.FC = () => {
             <div className="flex flex-wrap gap-2">
               {data.skills.map((skill) => (
                 <Chip
+                  key={skill.id}
                   value={skill.name}
                   className="w-fit bg-secondary-container text-on-secondary-container"
                 />

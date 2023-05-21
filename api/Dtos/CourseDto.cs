@@ -10,7 +10,7 @@ public class CourseDto
     public TypeDto Type { get; set; } = default!;
     public ProviderDto Provider { get; set; } = default!;
     public decimal Price { get; set; }
-    public List<TagDto> Tags { get; set; } = new ();
+    public List<TagDto> Tags { get; set; } = new();
     public int Level { get; set; }
     public string Language { get; set; } = default!;
     public TimeSpan Duration { get; set; }

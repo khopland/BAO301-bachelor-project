@@ -4,7 +4,7 @@ using Mediator;
 
 namespace api.Handlers;
 
-public class SkillHandler : IRequestHandler<GetSkillsRequest, IResult>, IRequestHandler<CreateSkillRequest,IResult>
+public class SkillHandler : IRequestHandler<GetSkillsRequest, IResult>, IRequestHandler<CreateSkillRequest, IResult>
 {
     private readonly ISkillRepository _skillRepository;
 
@@ -20,9 +20,8 @@ public class SkillHandler : IRequestHandler<GetSkillsRequest, IResult>, IRequest
 
     public async ValueTask<IResult> Handle(CreateSkillRequest request, CancellationToken cancellationToken)
     {
-        if(request.skill == null){
-            return Results.BadRequest();
-        }
-        return Results.Ok(await _skillRepository.CreateSkill(request.skill,cancellationToken));
+        return request.skill == null
+            ? Results.BadRequest()
+            : Results.Ok(await _skillRepository.CreateSkill(request.skill, cancellationToken));
     }
 }

@@ -6,5 +6,5 @@ namespace api.Requests;
 public class CreateCourseRequest : IHttpRequest
 {
     [FromBody]
-    public Course Course { get; set; }
+    public Course Course { get; set; } = default!;
 }

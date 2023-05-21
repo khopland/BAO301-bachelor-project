@@ -6,5 +6,5 @@ namespace api.Requests;
 public class AddInterestsToUserRequest : IHttpRequest
 {
     [FromBody]
-    public AddInterestsToUser AddInterestsToUser { get; set; }
-}   
+    public AddInterestsToUser AddInterestsToUser { get; set; } = default!;
+}

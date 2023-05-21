@@ -1,7 +1,6 @@
 using api.Mappers;
 using api.Requests;
 using Core.Interfaces;
-using Core.Models;
 using Mediator;
 
 namespace api.Handlers;
@@ -23,15 +22,15 @@ public class UserHandler : IRequestHandler<GetUserRequest, IResult>, IRequestHan
     public async ValueTask<IResult> Handle(GetUserRequest request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetUserById(request.UserId, cancellationToken);
-        return user == null 
-            ? Results.NotFound() 
+        return user == null
+            ? Results.NotFound()
             : Results.Ok(_mapper.UserToDto(user));
     }
 
     public async ValueTask<IResult> Handle(CreatUserRequest request, CancellationToken cancellationToken)
     {
-        return request.User == null 
-            ? Results.BadRequest("user not defined") 
+        return request.User == null
+            ? Results.BadRequest("user not defined")
             : Results.Ok(await _userRepository.CreateUser(_mapper.PostUserToUser(request.User), cancellationToken));
     }
 
@@ -45,12 +44,12 @@ public class UserHandler : IRequestHandler<GetUserRequest, IResult>, IRequestHan
     public async ValueTask<IResult> Handle(AddInterestsToUserRequest request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetUserById(request.AddInterestsToUser.UserId, cancellationToken);
-        if (user == null) 
+        if (user == null)
             return Results.BadRequest($"cant find user with id:{request.AddInterestsToUser.UserId}");
-    
+
         var tags = await _tagRepository.GetAllTags(cancellationToken);
         user.Interests = tags.Where(t => request.AddInterestsToUser.Interests.Contains(t.Id)).ToList();
-    
+
         await _userRepository.UpdateUser(user, cancellationToken);
         return Results.Ok();
     }
