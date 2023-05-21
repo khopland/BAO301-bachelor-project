@@ -20,6 +20,7 @@ public class UserRepository : IUserRepository
             .Include(u => u.Contact)
             .Include(u => u.Skills)
             .Include(u => u.Interests)
+            .Include(x => x.Segment)
             .Include(u => u.Enrollments)
             .ThenInclude(e => e.Course)
             .ThenInclude(c => c.Type)
@@ -43,9 +44,6 @@ public class UserRepository : IUserRepository
             .Include(x => x.Enrollments)
             .ThenInclude(x => x.Course)
             .ThenInclude(x => x.Categories)
-            .Include(x => x.Contact)
-            .Include(x => x.Skills)
-            .Include(x => x.Interests)
             .Include(x => x.Enrollments)
             .ThenInclude(x => x.Course)
             .ThenInclude(x => x.Skills)
@@ -58,9 +56,12 @@ public class UserRepository : IUserRepository
             .Include(x => x.Enrollments)
             .ThenInclude(x => x.Course)
             .ThenInclude(x => x.Provider)
+            .Include(x => x.Contact)
+            .Include(x => x.Skills)
+            .Include(x => x.Interests)
+            .Include(x => x.Segment)
             .AsSplitQuery()
-            .FirstOrDefaultAsync(x => x.Id == userId,
-                cancellationToken);
+            .FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
     }
 
     public async Task AddEnrollmentToUser(User user, Course course, CancellationToken cancellationToken)
@@ -81,5 +82,12 @@ public class UserRepository : IUserRepository
         enrollment.Progress = course.Duration;
         
         await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+    
+    public async Task<User> UpdateUser(User user, CancellationToken cancellationToken)
+    {
+        _dbContext.Users.Update(user);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        return user;
     }
 }

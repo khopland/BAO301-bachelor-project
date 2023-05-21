@@ -8,14 +8,14 @@ import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { Course, Enrollment } from '../sharedTypes'
 import { userContext } from '../UserContext'
-import { Button } from '@material-tailwind/react'
+import { Button, Chip } from '@material-tailwind/react'
 import { convertTimeFormat } from '../utils'
 
 const courseDescriptionLong =
   'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sunt magnam ipsum fugit illum ipsa! Totam labore, obcaecati iure corporis, rerum provident delectus reprehenderit repellendus velit ipsa inventore? Magnam atque error cum dolorem, eaque provident suscipit quidem, nesciunt perspiciatis minima praesentium autem sed quam harum itaque nisi ipsa rerum earum! Nobis.'
 export const CoursePage: React.FC = () => {
   const params = useParams()
-  const { user } = useContext(userContext)
+  const { user, refresh } = useContext(userContext)
   const EnrollmentQuery = useQuery<Enrollment, null>({
     queryKey: ['enrollment', params.courseId, user?.id],
     retry: false,
@@ -39,7 +39,9 @@ export const CoursePage: React.FC = () => {
         userId: user?.id,
         courseId: params.courseId,
       }),
-    }).then((x) => (x.ok ? EnrollmentQuery.refetch() : null))
+    })
+      .then((x) => (x.ok ? EnrollmentQuery.refetch() : null))
+      .then(() => refresh())
   }
   const completeCourse = () => {
     fetch('/api/enrollment/complete', {
@@ -66,7 +68,7 @@ export const CoursePage: React.FC = () => {
           />
         </header>
 
-        <aside className="md:col-span-2">
+        <aside className="flex flex-col md:col-span-2 gap-4">
           <AboutCourse>
             <InfoItem type="Type" value={data.type.name} icon="devices" />
             <InfoItem
@@ -89,6 +91,11 @@ export const CoursePage: React.FC = () => {
               icon="school"
             />
             <InfoItem
+              type="Category"
+              value={data.categories[0].name}
+              icon="category"
+            />
+            <InfoItem
               type="Price"
               value={data.price.toString()}
               icon="attach_money"
@@ -99,6 +106,20 @@ export const CoursePage: React.FC = () => {
               icon="storefront"
             />
           </AboutCourse>
+
+          <section className="rounded-2xl no-elevate bg-surface text-on-primary-container flex flex-col gap-6 px-7 py-7">
+            <h2 className="text-xl font-semibold">
+              Skills you'll learn during this course
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {data.skills.map((skill) => (
+                <Chip
+                  value={skill.name}
+                  className="w-fit bg-secondary-container text-on-secondary-container"
+                />
+              ))}
+            </div>
+          </section>
         </aside>
 
         <section className="md:col-start-3 md:col-end-8 flex flex-col gap-5">

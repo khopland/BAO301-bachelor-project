@@ -9,4 +9,5 @@ public interface IUserRepository
     public Task<User?> GetUserById(Guid userId, CancellationToken cancellationToken);
     public Task AddEnrollmentToUser(User user,Course course, CancellationToken cancellationToken);
     public Task CompleteEnrollmentForUser(Guid enrollmentId, CancellationToken cancellationToken);
+    Task<User> UpdateUser(User user, CancellationToken cancellationToken);
 }

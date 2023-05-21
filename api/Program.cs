@@ -73,6 +73,9 @@ group.MapGet("/hello", () => Results.Json(new { text = "Hello from server!!" }))
 group.MediateGet<GetUserRequest>("/user/{userId:guid}", "User", typeof(UserDto));
 group.MediateGet<GetAllUsersRequest>("/user", "User", typeof(List<UserDto>));
 group.MediatePost<CreatUserRequest>("/user", "User", typeof(UserDto));
+group.MediatePost<AddInterestsToUserRequest>("/user/interest", "User");
+
+group.MediateGet<GetRecommendationRequest>("/recommendation", "Recommendation", typeof(List<CourseDto>));
 
 group.MediateGet<GetSegmentsRequest>("/segment", "Segment", typeof(List<SegmentDto>));
 

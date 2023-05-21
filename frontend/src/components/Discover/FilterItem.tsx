@@ -8,7 +8,8 @@ import {
 import { Fragment, Dispatch, SetStateAction, useState, useEffect } from 'react'
 import { QueryBody } from '../../pages/DiscoverPage'
 import { useQuery } from '@tanstack/react-query'
-import { Category, CourseType } from '../../sharedTypes'
+import { Category, CourseType, Segment, Skill, Tag } from '../../sharedTypes'
+import { useLocation } from 'react-router-dom'
 
 var levels = ['Beginner', 'Intermediate', 'Expert']
 
@@ -17,6 +18,24 @@ type FilterItemProps = {
 }
 
 const FilterItem = ({ setQuery }: FilterItemProps) => {
+  let location = useLocation()
+  let state = location.state || {}
+
+  useEffect(() => {
+    if (state && state.type) {
+      let { id, type } = state
+      if (type === 'category') {
+        setSelectedCategory([id])
+      } else if (type === 'segment') {
+        setSelectedSegment([id])
+      }
+    }
+  }, [])
+
+  const segmentsQuery = useQuery<Segment[]>({
+    queryKey: ['segment'],
+    queryFn: () => fetch('/api/segment').then((res) => res.json()),
+  })
   const categoryQuery = useQuery<Category[]>({
     queryKey: ['category'],
     queryFn: () => fetch('/api/category').then((res) => res.json()),
@@ -25,25 +44,53 @@ const FilterItem = ({ setQuery }: FilterItemProps) => {
     queryKey: ['type'],
     queryFn: () => fetch('/api/type').then((res) => res.json()),
   })
+  const tagsQuery = useQuery<Tag[]>({
+    queryKey: ['tag'],
+    queryFn: () => fetch('/api/tag').then((res) => res.json()),
+  })
+  const skillsQuery = useQuery<Skill[]>({
+    queryKey: ['skill'],
+    queryFn: () => fetch('/api/skill').then((res) => res.json()),
+  })
 
-  const [selectedCategory, setSelectedCategory] = useState<string>()
-  const [selectedType, setSelectedType] = useState<string>()
   const [selectedLevel, setSelectedLevel] = useState<number>()
+  const [selectedType, setSelectedType] = useState<string[]>([])
+  const [selectedCategory, setSelectedCategory] = useState<string[]>([])
+  const [selectedSegment, setSelectedSegment] = useState<string[]>([])
+  const [selectedTag, setSelectedTag] = useState<string[]>([])
+  const [selectedSkill, setSelectedSkill] = useState<string[]>([])
 
   useEffect(() => {
     setQuery((q) => {
       return {
         ...q,
-        categoryId: selectedCategory,
-        courseTypeId: selectedType,
+        segmentIds: selectedSegment,
+        categoryIds: selectedCategory,
+        courseTypeIds: selectedType,
         level: selectedLevel,
+        tagIds: selectedTag,
+        skillIds: selectedSkill,
       }
     })
-  }, [selectedCategory, selectedType, selectedLevel])
+  }, [
+    selectedSkill,
+    selectedTag,
+    selectedCategory,
+    selectedType,
+    selectedLevel,
+    selectedSegment,
+  ])
 
-  const [isLevelOpen, setIsLevelOpen] = useState(true)
-  const [isCategoryOpen, setIsCategoryOpen] = useState(true)
-  const [isCourseTypeOpen, setIsCourseTypeOpen] = useState(true)
+  const [isLevelOpen, setIsLevelOpen] = useState(false)
+  const [isCategoryOpen, setIsCategoryOpen] = useState(
+    state.type == 'category' ? true : false
+  )
+  const [isCourseTypeOpen, setIsCourseTypeOpen] = useState(false)
+  const [isTagsOpen, setIsTagsOpen] = useState(false)
+  const [isSkillsOpen, setIsSkillsOpen] = useState(false)
+  const [isSegementsOpen, setIsSegementsOpen] = useState(
+    state.type == 'segment' ? true : false
+  )
 
   type IconProps = {
     id: number
@@ -66,7 +113,7 @@ const FilterItem = ({ setQuery }: FilterItemProps) => {
       >
         <AccordionHeader
           onClick={() => setIsLevelOpen((prev) => !prev)}
-          className="py-1 text-on-secondary-container hover:text-on-secondary-container"
+          className="py-1 text-on-secondary-container hover:text-on-secondary-container border-b-deep-purple-50"
         >
           <h3 className="text-lg font-semibold">Level</h3>
         </AccordionHeader>
@@ -97,14 +144,58 @@ const FilterItem = ({ setQuery }: FilterItemProps) => {
       </Accordion>
 
       <Accordion
+        open={isSegementsOpen}
+        icon={<Icon id={6} open={isSegementsOpen ? 6 : 0} />}
+      >
+        <AccordionHeader
+          onClick={() => setIsSegementsOpen((prev) => !prev)}
+          className="py-1 text-on-secondary-container hover:text-on-secondary-container border-b-deep-purple-50"
+        >
+          <h3 className="text-lg font-semibold">Segments</h3>
+        </AccordionHeader>
+        <AccordionBody className="grid grid-cols-1">
+          {segmentsQuery.data != null ? (
+            segmentsQuery.data.map((segment, i) => (
+              <Fragment key={segment.id}>
+                <Checkbox
+                  className="checked:bg-primary checked:border-primary checked:before:bg-primary border-on-primary-container p-0"
+                  labelProps={{
+                    className:
+                      'text-sm font-semibold text-on-primary-container capitalize mt-0',
+                  }}
+                  id={segment.id}
+                  label={segment.name}
+                  checked={selectedSegment.includes(segment.id)}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setSelectedSegment((prevSegments) => [
+                        ...prevSegments,
+                        segment.id,
+                      ])
+                    } else {
+                      setSelectedSegment((prevSegments) =>
+                        prevSegments.filter((id) => id !== segment.id)
+                      )
+                    }
+                  }}
+                />
+              </Fragment>
+            ))
+          ) : (
+            <></>
+          )}
+        </AccordionBody>
+      </Accordion>
+
+      <Accordion
         open={isCategoryOpen}
         icon={<Icon id={2} open={isCategoryOpen ? 2 : 0} />}
       >
         <AccordionHeader
           onClick={() => setIsCategoryOpen((prev) => !prev)}
-          className="py-1 text-on-secondary-container hover:text-on-secondary-container"
+          className="py-1 text-on-secondary-container hover:text-on-secondary-container border-b-deep-purple-50"
         >
-          <h3 className="text-lg font-semibold">Category</h3>
+          <h3 className="text-lg font-semibold">Categories</h3>
         </AccordionHeader>
         <AccordionBody className="grid grid-cols-1">
           {categoryQuery.data != null ? (
@@ -116,17 +207,21 @@ const FilterItem = ({ setQuery }: FilterItemProps) => {
                     className:
                       'text-sm font-semibold text-on-primary-container capitalize mt-0',
                   }}
-                  containerProps={{
-                    className: '',
-                  }}
                   id={category.id}
                   label={category.name}
-                  checked={selectedCategory === category.id}
-                  onChange={(e) =>
-                    setSelectedCategory(
-                      e.target.checked ? category.id : undefined
-                    )
-                  }
+                  checked={selectedCategory.includes(category.id)}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setSelectedCategory((prevCategories) => [
+                        ...prevCategories,
+                        category.id,
+                      ])
+                    } else {
+                      setSelectedCategory((prevCategories) =>
+                        prevCategories.filter((id) => id !== category.id)
+                      )
+                    }
+                  }}
                 />
               </Fragment>
             ))
@@ -142,9 +237,9 @@ const FilterItem = ({ setQuery }: FilterItemProps) => {
       >
         <AccordionHeader
           onClick={() => setIsCourseTypeOpen((prev) => !prev)}
-          className="py-1 text-on-secondary-container hover:text-on-secondary-container"
+          className="py-1 text-on-secondary-container hover:text-on-secondary-container border-b-deep-purple-50"
         >
-          <h3 className="text-lg font-semibold mb-3">Course types</h3>
+          <h3 className="text-lg font-semibold">Course Types</h3>
         </AccordionHeader>
         <AccordionBody className="grid grid-cols-1">
           {typeQuery.data != null ? (
@@ -152,19 +247,107 @@ const FilterItem = ({ setQuery }: FilterItemProps) => {
               <Fragment key={type.id + i}>
                 <Checkbox
                   className="checked:bg-primary checked:border-primary checked:before:bg-primary border-on-primary-container p-0"
-                  containerProps={{
-                    className: 'mt-1',
-                  }}
                   labelProps={{
                     className:
-                      'text-sm font-semibold text-on-secondary-container capitalize',
+                      'text-sm font-semibold text-on-secondary-container capitalize mt-0',
                   }}
                   id={type.id}
                   label={type.name}
-                  checked={selectedType === type.id}
-                  onChange={(e) =>
-                    setSelectedType(e.target.checked ? type.id : undefined)
-                  }
+                  checked={selectedType.includes(type.id)}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setSelectedType((prevTypes) => [...prevTypes, type.id])
+                    } else {
+                      setSelectedType((prevTypes) =>
+                        prevTypes.filter((id) => id !== type.id)
+                      )
+                    }
+                  }}
+                />
+              </Fragment>
+            ))
+          ) : (
+            <></>
+          )}
+        </AccordionBody>
+      </Accordion>
+
+      <Accordion
+        open={isTagsOpen}
+        icon={<Icon id={4} open={isTagsOpen ? 4 : 0} />}
+      >
+        <AccordionHeader
+          onClick={() => setIsTagsOpen((prev) => !prev)}
+          className="py-1 text-on-secondary-container hover:text-on-secondary-container border-b-deep-purple-50"
+        >
+          <h3 className="text-lg font-semibold">Tags</h3>
+        </AccordionHeader>
+        <AccordionBody className="grid grid-cols-1">
+          {tagsQuery.data != null ? (
+            tagsQuery.data.map((tag, i) => (
+              <Fragment key={tag.id}>
+                <Checkbox
+                  className="checked:bg-primary checked:border-primary checked:before:bg-primary border-on-primary-container p-0"
+                  labelProps={{
+                    className:
+                      'text-sm font-semibold text-on-primary-container capitalize mt-0',
+                  }}
+                  id={tag.id}
+                  label={tag.name}
+                  checked={selectedTag.includes(tag.id)}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setSelectedTag((prevTags) => [...prevTags, tag.id])
+                    } else {
+                      setSelectedTag((prevTags) =>
+                        prevTags.filter((id) => id !== tag.id)
+                      )
+                    }
+                  }}
+                />
+              </Fragment>
+            ))
+          ) : (
+            <></>
+          )}
+        </AccordionBody>
+      </Accordion>
+
+      <Accordion
+        open={isSkillsOpen}
+        icon={<Icon id={5} open={isSkillsOpen ? 5 : 0} />}
+      >
+        <AccordionHeader
+          onClick={() => setIsSkillsOpen((prev) => !prev)}
+          className="py-1 text-on-secondary-container hover:text-on-secondary-container border-b-deep-purple-50"
+        >
+          <h3 className="text-lg font-semibold">Skills</h3>
+        </AccordionHeader>
+        <AccordionBody className="grid grid-cols-1">
+          {skillsQuery.data != null ? (
+            skillsQuery.data.map((skill, i) => (
+              <Fragment key={skill.id}>
+                <Checkbox
+                  className="checked:bg-primary checked:border-primary checked:before:bg-primary border-on-primary-container p-0"
+                  labelProps={{
+                    className:
+                      'text-sm font-semibold text-on-primary-container capitalize mt-0',
+                  }}
+                  id={skill.id}
+                  label={skill.name}
+                  checked={selectedSkill.includes(skill.id)}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setSelectedSkill((prevSkills) => [
+                        ...prevSkills,
+                        skill.id,
+                      ])
+                    } else {
+                      setSelectedSkill((prevSkills) =>
+                        prevSkills.filter((id) => id !== skill.id)
+                      )
+                    }
+                  }}
                 />
               </Fragment>
             ))

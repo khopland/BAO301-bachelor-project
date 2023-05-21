@@ -31,6 +31,7 @@ public class CourseRepository : ICourseRepository
     {
         return await _dbContext.Courses
             .Include(x => x.Categories)
+            .ThenInclude(x => x.Segment)
             .Include(x => x.Skills)
             .Include(x => x.Type)
             .Include(x => x.Provider)
@@ -65,23 +66,24 @@ public class CourseRepository : ICourseRepository
         if (query.Name != null)
             queryable = queryable.Where(x => x.Name.ToLower().Contains(query.Name.Trim().ToLower()));
 
-        if (query.CourseTypeId != null)
-            queryable = queryable.Where(x => x.Type.Id == query.CourseTypeId);
+        if (query.CourseTypeIds != null && query.CourseTypeIds.Any())
+            queryable = queryable.Where(x => query.CourseTypeIds.Contains(x.Type.Id));
 
-        if (query.SegmentId != null)
-            queryable = queryable.Where(x => x.Categories.Any(c => c.Segment.Id == query.SegmentId));
+        if (query.SegmentIds != null && query.SegmentIds.Any())
+            queryable = queryable.Where(x => x.Categories.Any(c => query.SegmentIds.Contains(c.Segment.Id)));
 
-        if (query.CategoryId != null)
-            queryable = queryable.Where(x => x.Categories.Any(c => c.Id == query.CategoryId));
+        if (query.CategoryIds != null && query.CategoryIds.Any())
+            queryable = queryable.Where(x => x.Categories.Any(c => query.CategoryIds.Contains(c.Id)));
 
-        if (query.SkillId != null)
-            queryable = queryable.Where(x => x.Skills.Any(c => c.Id == query.SkillId));
+        if (query.SkillIds != null && query.SkillIds.Any())
+            queryable = queryable.Where(x => x.Skills.Any(c => query.SkillIds.Contains(c.Id)));
 
-        if (query.TagId != null)
-            queryable = queryable.Where(x => x.Tags.Any(c => c.Id == query.TagId));
+        if (query.TagIds != null && query.TagIds.Any())
+            queryable = queryable.Where(x => x.Tags.Any(c => query.TagIds.Contains(c.Id)));
 
         if (query.Language != null)
             queryable = queryable.Where(x => x.Language == query.Language);
+        
         if (query.Level != null)
             queryable = queryable.Where(x => x.Level == query.Level);
 
@@ -94,4 +96,5 @@ public class CourseRepository : ICourseRepository
             .AsSplitQuery()
             .ToListAsync(cancellationToken);
     }
+
 }

@@ -1,18 +1,22 @@
 using api.Mappers;
 using api.Requests;
 using Core.Interfaces;
+using Core.Models;
 using Mediator;
 
 namespace api.Handlers;
 
 public class UserHandler : IRequestHandler<GetUserRequest, IResult>, IRequestHandler<CreatUserRequest, IResult>,
-    IRequestHandler<GetAllUsersRequest, IResult>
+    IRequestHandler<GetAllUsersRequest, IResult>, IRequestHandler<AddInterestsToUserRequest, IResult>
 {
     private readonly IUserRepository _userRepository;
+    private readonly ITagRepository _tagRepository;
+
     private readonly ApiMapper _mapper;
-    public UserHandler(IUserRepository userRepository, ApiMapper mapper)
+    public UserHandler(IUserRepository userRepository, ApiMapper mapper, ITagRepository tagRepository)
     {
         _userRepository = userRepository;
+        _tagRepository = tagRepository;
         _mapper = mapper;
     }
 
@@ -37,4 +41,18 @@ public class UserHandler : IRequestHandler<GetUserRequest, IResult>, IRequestHan
 
         return Results.Ok(users.ConvertAll(u => _mapper.UserToDto(u)));
     }
+
+    public async ValueTask<IResult> Handle(AddInterestsToUserRequest request, CancellationToken cancellationToken)
+    {
+        var user = await _userRepository.GetUserById(request.AddInterestsToUser.UserId, cancellationToken);
+        if (user == null) 
+            return Results.BadRequest($"cant find user with id:{request.AddInterestsToUser.UserId}");
+    
+        var tags = await _tagRepository.GetAllTags(cancellationToken);
+        user.Interests = tags.Where(t => request.AddInterestsToUser.Interests.Contains(t.Id)).ToList();
+    
+        await _userRepository.UpdateUser(user, cancellationToken);
+        return Results.Ok();
+    }
+
 }

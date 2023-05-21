@@ -2,11 +2,11 @@ namespace Core.Models;
 
 public class CourseQuery
 {
-    public Guid? CourseTypeId { get; set; }
-    public Guid? SegmentId { get; set; }
-    public Guid? CategoryId { get; set; }
-    public Guid? SkillId { get; set; }
-    public Guid? TagId { get; set; }
+    public ICollection<Guid>? CourseTypeIds { get; set; }
+    public ICollection<Guid>? SegmentIds { get; set; }
+    public ICollection<Guid>? CategoryIds { get; set; }
+    public ICollection<Guid>? SkillIds { get; set; }
+    public ICollection<Guid>? TagIds { get; set; }
     public int? Level { get; set; }
     public string? Language { get; set; }
     public string? Name { get; set; }

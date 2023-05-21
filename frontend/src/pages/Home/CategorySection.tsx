@@ -3,6 +3,7 @@ import { FC, Fragment } from 'react'
 import { Category } from '../../sharedTypes'
 import CustomIcon from '../../components/Common/CustomIcon'
 import { Typography } from '@material-tailwind/react'
+import { Link } from 'react-router-dom'
 
 interface CategorySectionProps {
   className?: string
@@ -42,28 +43,33 @@ export const CategorySection: FC<CategorySectionProps> = ({ className }) => {
         {categoryQuery.data != null ? (
           categoryQuery.data.map((category, i) => (
             <Fragment key={category.id}>
-              <div
-                className="relative bg-cover bg-no-repeat bg-top rounded-2xl h-32"
-                style={{
-                  backgroundImage: `url('./src/components/assets/${category.name
-                    .toLowerCase()
-                    .replace(/ /g, '_')}.webp')`,
-                }}
+              <Link
+                to="/discover"
+                state={{ id: category.id, type: 'category' }}
               >
-                <div className="w-full h-full flex flex-col justify-center items-center backdrop-blur-[2px] rounded-2xl backdrop-brightness-50"></div>
+                <div
+                  className="relative bg-cover bg-no-repeat bg-top rounded-2xl h-32"
+                  style={{
+                    backgroundImage: `url('./src/components/assets/${category.name
+                      .toLowerCase()
+                      .replace(/ /g, '_')}.webp')`,
+                  }}
+                >
+                  <div className="w-full h-full flex flex-col justify-center items-center backdrop-blur-[2px] rounded-2xl backdrop-brightness-50"></div>
 
-                <div className="absolute top-5 left-1/2 transform -translate-x-1/2 p-3 rounded-xl bg-gradient-to-tr from-gray-50/20 to-gray-900/20">
-                  <CustomIcon
-                    name={category.name}
-                    color="#fefcf4"
-                    className="h-7 w-10"
-                  ></CustomIcon>
+                  <div className="absolute top-5 left-1/2 transform -translate-x-1/2 p-3 rounded-xl bg-gradient-to-tr from-gray-50/20 to-gray-900/20">
+                    <CustomIcon
+                      name={category.name}
+                      color="#fefcf4"
+                      className="h-7 w-10"
+                    ></CustomIcon>
+                  </div>
+
+                  <Typography className="absolute bottom-1 left-1/2 transform -translate-x-1/2 text-base font-semibold mb-2 text-on-primary text-center leading-[1.1rem] w-full">
+                    {category.name}
+                  </Typography>
                 </div>
-
-                <Typography className="absolute bottom-1 left-1/2 transform -translate-x-1/2 text-base font-semibold mb-2 text-on-primary text-center leading-[1.1rem] w-full">
-                  {category.name}
-                </Typography>
-              </div>
+              </Link>
             </Fragment>
           ))
         ) : (

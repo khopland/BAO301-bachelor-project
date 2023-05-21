@@ -12,7 +12,6 @@ import {
 } from '@material-tailwind/react'
 import { Link } from 'react-router-dom'
 import ReadMoreLink from '../Common/ReadMoreLink'
-import CustomIcon from '../Common/CustomIcon'
 import { convertTimeFormat } from '../../utils'
 
 interface CourseCardProps {
@@ -79,13 +78,13 @@ const CourseCard: React.FC<CourseCardProps> = ({
           </Typography>
         </Link>
         <CardBody className="px-4 pt-1 pb-0 flex flex-col justify-between gap-2">
-          <ReadMoreLink limit={200} courseId={id}>
+          <ReadMoreLink limit={150} courseId={id}>
             {description}
           </ReadMoreLink>
         </CardBody>
       </section>
 
-      <CardFooter className="self-end flex pb-4 pt-0 w-full justify-between ">
+      <CardFooter className="self-end flex pb-4 pt-4 w-full justify-between">
         <Popover
           open={openPopover[0]}
           handler={() => setOpenPopover([true, false, false, false])}

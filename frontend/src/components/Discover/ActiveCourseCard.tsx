@@ -1,11 +1,12 @@
 import React from 'react'
 import {
   Card,
-  CardHeader,
   CardBody,
   CardFooter,
   Typography,
   Progress,
+  Tooltip,
+  IconButton,
 } from '@material-tailwind/react'
 import { Link } from 'react-router-dom'
 import { convertTimeFormat } from '../../utils'
@@ -28,60 +29,114 @@ function getRandomNumber(): number {
 const ActiveCourseCard: React.FC<CourseCardProps> = ({
   id,
   title,
-  image,
-  description,
   duration,
   level,
   provider,
   courseType,
 }) => (
-  <Card className="max-w-[18rem] w-[15rem] overflow-hidden bg-surface flex-shrink-0 flex flex-col justify-between">
-    <CardHeader
-      floated={false}
-      shadow={false}
-      color="transparent"
-      className="m-0 h-40"
-    >
-      <img src={image} alt={description} />
-    </CardHeader>
-    <CardBody className="px-4 pt-4 pb-2">
+  <Card className="max-w-[18rem] w-[15rem] overflow-hidden bg-surface flex-shrink-0 flex flex-col justify-around">
+    <CardBody className="flex flex-col px-6 pt-6 pb-0 justify-between">
       <Link to={`/course/${id}`}>
-        <Typography className="text-1xl font-semibold text-on-primary-container">
+        <Typography className="text-lg leading-5 font-semibold text-on-primary-container">
           {title}
         </Typography>
       </Link>
-      <section className="grid grid-cols-2 grid-rows-2 gap-5 mt-4">
-        <div className="flex gap-1.5">
-          <i className="material-icons text-on-secondary-container">schedule</i>
-          <span className="text-xs font-semibold self-center text-on-secondary-container">
-            {convertTimeFormat(duration)}
-          </span>
-        </div>
-        <div className="flex gap-1.5">
-          <i className="material-icons text-on-secondary-container">
-            bar_chart
-          </i>
-          <span className="text-xs font-semibold self-center text-on-secondary-container">
-            {level}
-          </span>
-        </div>
-        <div className="flex gap-1.5">
-          <i className="material-icons text-on-secondary-container">
-            storefront
-          </i>
-          <span className="text-xs font-semibold self-center text-on-secondary-container">
-            {provider}
-          </span>
-        </div>
-        <div className="flex gap-1.5">
-          <i className="material-icons text-on-secondary-container">devices</i>
-          <span className="text-xs font-semibold self-center text-on-secondary-container line-clamp-1">
-            {courseType}
-          </span>
-        </div>
-      </section>
     </CardBody>
-    <CardFooter className="px-4 pb-4 pt-2">
+    <CardFooter className="px-6 pb-4 pt-2 flex flex-col gap-5">
+      <section className="flex w-full justify-between">
+        <Tooltip
+          className="bg-background py-2 px-4"
+          placement="bottom"
+          content={
+            <>
+              <Typography className="text-on-surface-variant font-medium text-xs opacity-80">
+                Duration
+              </Typography>
+              <Typography className="font-medium text-lg mt-[-5px] text-on-primary-container">
+                {convertTimeFormat(duration)}
+              </Typography>
+            </>
+          }
+        >
+          <IconButton
+            color="purple"
+            className="flex gap-1.5 bg-secondary-container p-1 rounded-lg hover:shadow-none shadow-none"
+          >
+            <i className="material-icons-round text-on-secondary-container ">
+              schedule
+            </i>
+          </IconButton>
+        </Tooltip>
+        <Tooltip
+          className="bg-background py-2 px-4"
+          placement="bottom"
+          content={
+            <>
+              <Typography className="text-on-surface-variant font-medium text-xs opacity-80">
+                Level
+              </Typography>
+              <Typography className="font-medium text-lg mt-[-5px] text-on-primary-container">
+                {level}
+              </Typography>
+            </>
+          }
+        >
+          <IconButton
+            color="purple"
+            className="flex gap-1.5 bg-secondary-container p-1 rounded-lg hover:shadow-none shadow-none"
+          >
+            <i className="material-icons-round text-on-secondary-container ">
+              bar_chart
+            </i>
+          </IconButton>
+        </Tooltip>
+        <Tooltip
+          className="bg-background py-2 px-4"
+          placement="bottom"
+          content={
+            <>
+              <Typography className="text-on-surface-variant font-medium text-xs opacity-80">
+                Course Type
+              </Typography>
+              <Typography className="font-medium text-lg mt-[-5px] text-on-primary-container">
+                {courseType}
+              </Typography>
+            </>
+          }
+        >
+          <IconButton
+            color="purple"
+            className="flex gap-1.5 bg-secondary-container p-1 rounded-lg hover:shadow-none shadow-none"
+          >
+            <i className="material-icons-round text-on-secondary-container ">
+              category
+            </i>
+          </IconButton>
+        </Tooltip>
+        <Tooltip
+          className="bg-background py-2 px-4"
+          placement="bottom"
+          content={
+            <>
+              <Typography className="text-on-surface-variant font-medium text-xs opacity-80">
+                Provider
+              </Typography>
+              <Typography className="font-medium text-lg mt-[-5px] text-on-primary-container">
+                {provider}
+              </Typography>
+            </>
+          }
+        >
+          <IconButton
+            color="purple"
+            className="flex gap-1.5 bg-secondary-container p-1 rounded-lg hover:shadow-none shadow-none"
+          >
+            <i className="material-icons-round text-on-secondary-container ">
+              storefront
+            </i>
+          </IconButton>
+        </Tooltip>
+      </section>
       <Progress
         value={getRandomNumber()}
         size="lg"

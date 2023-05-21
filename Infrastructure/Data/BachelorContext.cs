@@ -344,6 +344,7 @@ public class BachelorDbContext : DbContext
                 FirstName = "Deogratias",
                 LastName = "Saidi",
                 Position = "Anls, Cloud Engineering",
+                Segment = technologySegment,
                 Contact = new Contact
                 {
                     Id = Guid.NewGuid(),
