@@ -8,7 +8,8 @@ import {
 import { Fragment, Dispatch, SetStateAction, useState, useEffect } from 'react'
 import { QueryBody } from '../../pages/DiscoverPage'
 import { useQuery } from '@tanstack/react-query'
-import { Category, CourseType, Skill, Tag } from '../../sharedTypes'
+import { Category, CourseType, Segment, Skill, Tag } from '../../sharedTypes'
+import { useLocation } from 'react-router-dom'
 
 var levels = ['Beginner', 'Intermediate', 'Expert']
 
@@ -17,6 +18,24 @@ type FilterItemProps = {
 }
 
 const FilterItem = ({ setQuery }: FilterItemProps) => {
+  let location = useLocation()
+  let state = location.state || {}
+
+  useEffect(() => {
+    if (state && state.type) {
+      let { id, type } = state
+      if (type === 'category') {
+        setSelectedCategory([id])
+      } else if (type === 'segment') {
+        setSelectedSegment([id])
+      }
+    }
+  }, [])
+
+  const segmentsQuery = useQuery<Segment[]>({
+    queryKey: ['segment'],
+    queryFn: () => fetch('/api/segment').then((res) => res.json()),
+  })
   const categoryQuery = useQuery<Category[]>({
     queryKey: ['category'],
     queryFn: () => fetch('/api/category').then((res) => res.json()),
@@ -37,6 +56,7 @@ const FilterItem = ({ setQuery }: FilterItemProps) => {
   const [selectedLevel, setSelectedLevel] = useState<number>()
   const [selectedType, setSelectedType] = useState<string[]>([])
   const [selectedCategory, setSelectedCategory] = useState<string[]>([])
+  const [selectedSegment, setSelectedSegment] = useState<string[]>([])
   const [selectedTag, setSelectedTag] = useState<string[]>([])
   const [selectedSkill, setSelectedSkill] = useState<string[]>([])
 
@@ -44,6 +64,7 @@ const FilterItem = ({ setQuery }: FilterItemProps) => {
     setQuery((q) => {
       return {
         ...q,
+        segmentIds: selectedSegment,
         categoryIds: selectedCategory,
         courseTypeIds: selectedType,
         level: selectedLevel,
@@ -57,13 +78,19 @@ const FilterItem = ({ setQuery }: FilterItemProps) => {
     selectedCategory,
     selectedType,
     selectedLevel,
+    selectedSegment,
   ])
 
   const [isLevelOpen, setIsLevelOpen] = useState(false)
-  const [isCategoryOpen, setIsCategoryOpen] = useState(false)
+  const [isCategoryOpen, setIsCategoryOpen] = useState(
+    state.type == 'category' ? true : false
+  )
   const [isCourseTypeOpen, setIsCourseTypeOpen] = useState(false)
   const [isTagsOpen, setIsTagsOpen] = useState(false)
   const [isSkillsOpen, setIsSkillsOpen] = useState(false)
+  const [isSegementsOpen, setIsSegementsOpen] = useState(
+    state.type == 'segment' ? true : false
+  )
 
   type IconProps = {
     id: number
@@ -117,34 +144,37 @@ const FilterItem = ({ setQuery }: FilterItemProps) => {
       </Accordion>
 
       <Accordion
-        open={isCourseTypeOpen}
-        icon={<Icon id={3} open={isCourseTypeOpen ? 3 : 0} />}
+        open={isSegementsOpen}
+        icon={<Icon id={6} open={isSegementsOpen ? 6 : 0} />}
       >
         <AccordionHeader
-          onClick={() => setIsCourseTypeOpen((prev) => !prev)}
+          onClick={() => setIsSegementsOpen((prev) => !prev)}
           className="py-1 text-on-secondary-container hover:text-on-secondary-container border-b-deep-purple-50"
         >
-          <h3 className="text-lg font-semibold mb-3">Course Types</h3>
+          <h3 className="text-lg font-semibold">Segments</h3>
         </AccordionHeader>
         <AccordionBody className="grid grid-cols-1">
-          {typeQuery.data != null ? (
-            typeQuery.data.map((type, i) => (
-              <Fragment key={type.id + i}>
+          {segmentsQuery.data != null ? (
+            segmentsQuery.data.map((segment, i) => (
+              <Fragment key={segment.id}>
                 <Checkbox
                   className="checked:bg-primary checked:border-primary checked:before:bg-primary border-on-primary-container p-0"
                   labelProps={{
                     className:
-                      'text-sm font-semibold text-on-secondary-container capitalize mt-0',
+                      'text-sm font-semibold text-on-primary-container capitalize mt-0',
                   }}
-                  id={type.id}
-                  label={type.name}
-                  checked={selectedType.includes(type.id)}
+                  id={segment.id}
+                  label={segment.name}
+                  checked={selectedSegment.includes(segment.id)}
                   onChange={(e) => {
                     if (e.target.checked) {
-                      setSelectedType((prevTypes) => [...prevTypes, type.id])
+                      setSelectedSegment((prevSegments) => [
+                        ...prevSegments,
+                        segment.id,
+                      ])
                     } else {
-                      setSelectedType((prevTypes) =>
-                        prevTypes.filter((id) => id !== type.id)
+                      setSelectedSegment((prevSegments) =>
+                        prevSegments.filter((id) => id !== segment.id)
                       )
                     }
                   }}
@@ -189,6 +219,47 @@ const FilterItem = ({ setQuery }: FilterItemProps) => {
                     } else {
                       setSelectedCategory((prevCategories) =>
                         prevCategories.filter((id) => id !== category.id)
+                      )
+                    }
+                  }}
+                />
+              </Fragment>
+            ))
+          ) : (
+            <></>
+          )}
+        </AccordionBody>
+      </Accordion>
+
+      <Accordion
+        open={isCourseTypeOpen}
+        icon={<Icon id={3} open={isCourseTypeOpen ? 3 : 0} />}
+      >
+        <AccordionHeader
+          onClick={() => setIsCourseTypeOpen((prev) => !prev)}
+          className="py-1 text-on-secondary-container hover:text-on-secondary-container border-b-deep-purple-50"
+        >
+          <h3 className="text-lg font-semibold">Course Types</h3>
+        </AccordionHeader>
+        <AccordionBody className="grid grid-cols-1">
+          {typeQuery.data != null ? (
+            typeQuery.data.map((type, i) => (
+              <Fragment key={type.id + i}>
+                <Checkbox
+                  className="checked:bg-primary checked:border-primary checked:before:bg-primary border-on-primary-container p-0"
+                  labelProps={{
+                    className:
+                      'text-sm font-semibold text-on-secondary-container capitalize mt-0',
+                  }}
+                  id={type.id}
+                  label={type.name}
+                  checked={selectedType.includes(type.id)}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setSelectedType((prevTypes) => [...prevTypes, type.id])
+                    } else {
+                      setSelectedType((prevTypes) =>
+                        prevTypes.filter((id) => id !== type.id)
                       )
                     }
                   }}

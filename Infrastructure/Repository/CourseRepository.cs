@@ -69,8 +69,8 @@ public class CourseRepository : ICourseRepository
         if (query.CourseTypeIds != null && query.CourseTypeIds.Any())
             queryable = queryable.Where(x => query.CourseTypeIds.Contains(x.Type.Id));
 
-        if (query.SegmentId != null)
-            queryable = queryable.Where(x => x.Categories.Any(c => c.Segment.Id == query.SegmentId));
+        if (query.SegmentIds != null && query.SegmentIds.Any())
+            queryable = queryable.Where(x => x.Categories.Any(c => query.SegmentIds.Contains(c.Segment.Id)));
 
         if (query.CategoryIds != null && query.CategoryIds.Any())
             queryable = queryable.Where(x => x.Categories.Any(c => query.CategoryIds.Contains(c.Id)));

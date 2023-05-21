@@ -15,7 +15,7 @@ const courseDescriptionLong =
   'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sunt magnam ipsum fugit illum ipsa! Totam labore, obcaecati iure corporis, rerum provident delectus reprehenderit repellendus velit ipsa inventore? Magnam atque error cum dolorem, eaque provident suscipit quidem, nesciunt perspiciatis minima praesentium autem sed quam harum itaque nisi ipsa rerum earum! Nobis.'
 export const CoursePage: React.FC = () => {
   const params = useParams()
-  const { user } = useContext(userContext)
+  const { user, refresh } = useContext(userContext)
   const EnrollmentQuery = useQuery<Enrollment, null>({
     queryKey: ['enrollment', params.courseId, user?.id],
     retry: false,
@@ -39,7 +39,9 @@ export const CoursePage: React.FC = () => {
         userId: user?.id,
         courseId: params.courseId,
       }),
-    }).then((x) => (x.ok ? EnrollmentQuery.refetch() : null))
+    })
+      .then((x) => (x.ok ? EnrollmentQuery.refetch() : null))
+      .then(() => refresh())
   }
   const completeCourse = () => {
     fetch('/api/enrollment/complete', {

@@ -3,7 +3,7 @@ import { ProfileHeader } from '../../components/Profile/ProfileHeader'
 import { Course } from '../../sharedTypes'
 import { userContext } from '../../UserContext'
 import ActiveCourseCard from '../../components/Discover/ActiveCourseCard'
-import { Chip, Typography } from '@material-tailwind/react'
+import { Chip, Spinner, Typography } from '@material-tailwind/react'
 import CardWrapper from '../../components/Common/CardWrapper'
 import { AddInterests } from './AddInterests'
 
@@ -50,8 +50,14 @@ const CourseSection = ({
 }
 
 export const ProfilePage: FC = () => {
-  const { user } = useContext(userContext)
-
+  const { user, loading } = useContext(userContext)
+  if (loading) {
+    return (
+      <div>
+        <Spinner color="purple" className="h-6 w-6" />
+      </div>
+    )
+  }
   return (
     <main className="container mx-auto p-5 md:p-0 md:pl-[5rem] grid grid-cols-1 gap-5">
       <ProfileHeader
@@ -80,7 +86,7 @@ export const ProfilePage: FC = () => {
             <Typography className="text-lg md:text-xl font-bold text-on-secondary-container">
               Interests
             </Typography>
-            <AddInterests interests={user?.interests}></AddInterests>
+            <AddInterests />
           </div>
 
           <div className="flex flex-wrap gap-2">

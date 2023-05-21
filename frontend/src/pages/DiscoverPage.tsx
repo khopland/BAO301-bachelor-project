@@ -20,10 +20,10 @@ import {
 } from '@material-tailwind/react'
 
 export type QueryBody = {
-  courseTypeId?: string
-  categoryId?: string
-  skillId?: string
-  tagId?: string
+  courseTypeIds?: string[]
+  categoryIds?: string[]
+  skillIds?: string[]
+  tagIds?: string[]
   level?: number
   language?: string
   name?: string
@@ -43,6 +43,7 @@ export const DiscoverPage: React.FC = () => {
       return { ...q, name: searchDebounced }
     })
   }, [searchDebounced])
+  console.log(query)
 
   const { isLoading, error, data } = useQuery<Course[]>({
     queryKey: ['discovery', query],
@@ -171,7 +172,7 @@ export const DiscoverPage: React.FC = () => {
           </MenuList>
         </Menu>
         <CourseList>
-          {isLoading ? <Spinner className="h-12 w-12" /> : <></>}
+          {isLoading ? <Spinner color="purple" className="h-12 w-12" /> : <></>}
           {sortedData != null && sortedData.length > 0 ? (
             sortedData.map((course: Course) => (
               <React.Fragment key={course.id}>

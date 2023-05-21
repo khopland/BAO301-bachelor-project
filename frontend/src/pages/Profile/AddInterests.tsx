@@ -1,4 +1,4 @@
-import { Fragment, useContext, useState } from 'react'
+import { Fragment, useContext, useEffect, useState } from 'react'
 import {
   Button,
   Dialog,
@@ -8,6 +8,7 @@ import {
   IconButton,
   Chip,
   Typography,
+  Spinner,
 } from '@material-tailwind/react'
 import { FC } from 'react'
 import { Tag } from '../../sharedTypes'
@@ -16,16 +17,17 @@ import { userContext } from '../../UserContext'
 
 interface AddInterestsProps {
   className?: string
-  interests?: Tag[]
 }
 
-export const AddInterests: FC<AddInterestsProps> = ({ interests }) => {
-  const { user, refresh } = useContext(userContext)
+export const AddInterests: FC<AddInterestsProps> = () => {
+  const { user, refresh, loading } = useContext(userContext)
   const [open, setOpen] = useState(false)
   const handleOpen = () => setOpen(!open)
-  const [selectedInterests, setSelectedInterests] = useState<Tag[]>(
-    interests || []
-  )
+  const [selectedInterests, setSelectedInterests] = useState<Tag[]>([])
+
+  useEffect(() => {
+    setSelectedInterests(user?.interests || [])
+  }, [user])
 
   const tagsQuery = useQuery<Tag[]>({
     queryKey: ['tag'],
@@ -59,7 +61,13 @@ export const AddInterests: FC<AddInterestsProps> = ({ interests }) => {
     }
     handleOpen()
   }
-
+  if (loading) {
+    return (
+      <div>
+        <Spinner color="purple" className="h-6 w-6" />
+      </div>
+    )
+  }
   return (
     <Fragment>
       <IconButton
@@ -76,7 +84,7 @@ export const AddInterests: FC<AddInterestsProps> = ({ interests }) => {
         className="bg-background p-6"
       >
         <DialogHeader className="pb-0">Select Your Interests</DialogHeader>
-        <DialogBody className=" flex flex-wrap gap-1 pt-0 overflow-scroll">
+        <DialogBody className=" flex flex-wrap gap-1 pt-0">
           <Typography className="text-sm md:text-base text-on-background mb-2">
             By adding your areas of interest, you can receive course suggestions
             tailored to your preferences. This means you spend less time

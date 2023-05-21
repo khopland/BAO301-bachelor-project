@@ -7,6 +7,7 @@ type UserContext = {
   users: User[]
   changeUser: (id: string) => void
   refresh: () => Promise<void>
+  loading: boolean
 }
 
 export const userContext = createContext<UserContext>({
@@ -16,9 +17,11 @@ export const userContext = createContext<UserContext>({
     throw new Error('Context not initialized')
   },
   refresh: async () => {},
+  loading: true,
 })
 
 export const UserProvider = ({ children }: { children: JSX.Element[] }) => {
+  const [loading, setLoading] = useState(true)
   const [user, setUser] = useState<User | null>(null)
   const [users, setUsers] = useState<User[]>([])
   const { data, refetch } = useQuery<User[]>({
@@ -29,6 +32,7 @@ export const UserProvider = ({ children }: { children: JSX.Element[] }) => {
   useEffect(() => {
     setUsers(data ?? [])
     setUser((data ?? [])[0])
+    setLoading(false)
   }, [data])
   const refresh = async () => {
     await refetch()
@@ -38,7 +42,7 @@ export const UserProvider = ({ children }: { children: JSX.Element[] }) => {
   }
 
   return (
-    <userContext.Provider value={{ user, users, changeUser, refresh }}>
+    <userContext.Provider value={{ user, users, changeUser, refresh, loading }}>
       {children}
     </userContext.Provider>
   )

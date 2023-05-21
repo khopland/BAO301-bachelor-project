@@ -37,12 +37,12 @@ const ActiveCourseCard: React.FC<CourseCardProps> = ({
   <Card className="max-w-[18rem] w-[15rem] overflow-hidden bg-surface flex-shrink-0 flex flex-col justify-around">
     <CardBody className="flex flex-col px-6 pt-6 pb-0 justify-between">
       <Link to={`/course/${id}`}>
-        <Typography className="text-base leading-4 font-semibold text-on-primary-container">
+        <Typography className="text-lg leading-5 font-semibold text-on-primary-container">
           {title}
         </Typography>
       </Link>
     </CardBody>
-    <CardFooter className="px-4 pb-4 pt-2 flex flex-col gap-5">
+    <CardFooter className="px-6 pb-4 pt-2 flex flex-col gap-5">
       <section className="flex w-full justify-between">
         <Tooltip
           className="bg-background py-2 px-4"

@@ -1,4 +1,4 @@
-import { Chip, Typography } from '@material-tailwind/react'
+import { Chip, Spinner, Typography } from '@material-tailwind/react'
 import { userContext } from '../../UserContext'
 import { FC, useContext } from 'react'
 import { SegmentSection } from './SegmentSection'
@@ -8,8 +8,14 @@ import { RecommendedCoursesSection } from './RecommendedCoursesSection'
 import { PrioritiyCoursesSection } from './PriorityCoursesSection'
 
 export const HomePage: FC = () => {
-  const { user } = useContext(userContext)
-
+  const { user, loading } = useContext(userContext)
+  if (loading) {
+    return (
+      <div>
+        <Spinner color="purple" className="h-6 w-6" />
+      </div>
+    )
+  }
   return (
     <main className="container mx-auto md:p-0 md:pl-[5rem] grid grid-cols-1 gap-14 md:gap-20">
       <header
@@ -47,8 +53,17 @@ export const HomePage: FC = () => {
       )}
 
       <SegmentSection className="grid grid-cols-1 md:grid-cols-2 gap-10 bg-surface p-7 rounded-2xl w-full" />
-      <PrioritiyCoursesSection />
+      {user?.enrollments?.length ?? [].length > 0 ? (
+        <RecommendedCoursesSection />
+      ) : (
+        <PrioritiyCoursesSection />
+      )}
       <CategorySection className="grid grid-cols-1 gap-7 bg-surface p-7 rounded-2xl w-full" />
+      {user?.enrollments?.length ?? [].length > 0 ? (
+        <PrioritiyCoursesSection />
+      ) : (
+        <></>
+      )}
     </main>
   )
 }
