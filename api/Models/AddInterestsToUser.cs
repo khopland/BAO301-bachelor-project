@@ -3,5 +3,5 @@
 public class AddInterestsToUser
 {
     public Guid UserId { get; set; }
-    public List<Guid> Interests { get; set; }
+    public List<Guid> Interests { get; set; } = new();
 }

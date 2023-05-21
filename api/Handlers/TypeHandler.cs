@@ -4,7 +4,7 @@ using Mediator;
 
 namespace api.Handlers;
 
-public class TypeHandler : IRequestHandler<GetTypesRequest, IResult>, IRequestHandler<CreateTypeRequest,IResult>
+public class TypeHandler : IRequestHandler<GetTypesRequest, IResult>, IRequestHandler<CreateTypeRequest, IResult>
 {
     private readonly ICourseTypeRepository _typeRepository;
 
@@ -20,9 +20,10 @@ public class TypeHandler : IRequestHandler<GetTypesRequest, IResult>, IRequestHa
 
     public async ValueTask<IResult> Handle(CreateTypeRequest request, CancellationToken cancellationToken)
     {
-        if(request.Type == null){
+        if (request.Type == null)
+        {
             return Results.BadRequest();
         }
-        return Results.Ok(await _typeRepository.CreateCourseType(request.Type,cancellationToken));
+        return Results.Ok(await _typeRepository.CreateCourseType(request.Type, cancellationToken));
     }
 }

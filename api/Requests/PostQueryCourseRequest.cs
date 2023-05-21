@@ -6,5 +6,5 @@ namespace api.Requests;
 public class PostQueryCourseRequest : IHttpRequest
 {
     [FromBody]
-    public CourseQuery Query { get; set; }
+    public CourseQuery Query { get; set; } = default!;
 }

@@ -20,12 +20,12 @@ public class RecommendationHandler : IRequestHandler<GetRecommendationRequest, I
     public async ValueTask<IResult> Handle(GetRecommendationRequest request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetUserById(request.UserId, cancellationToken);
-        if (user == null)return Results.BadRequest($"Can not find user with ID:{ request.UserId}");
+        if (user == null) return Results.BadRequest($"Can not find user with ID:{request.UserId}");
         var courses = await _courseRepository.GetAllCourses(cancellationToken);
-        
+
         var recommendedCourses = courses
-            .Where(c => user.Enrollments.All(e => e.Course.Id != c.Id)) 
-            .Select(c => new 
+            .Where(c => user.Enrollments.All(e => e.Course.Id != c.Id))
+            .Select(c => new
             {
                 Course = c,
                 Score = ScoreCourse(c, user)
@@ -40,30 +40,6 @@ public class RecommendationHandler : IRequestHandler<GetRecommendationRequest, I
 
     private static int ScoreCourse(Course course, User user)
     {
-        // foreach (var interest in user.Interests)
-        // {
-        //     if (course.Tags.Any(t => t.Id == interest.Id))
-        //     {
-        //         score += 3;
-        //     }
-        // }
-        //
-        // foreach (var skill in user.Skills)
-        // {
-        //     if (course.Skills.Any(s => s.Id == skill.Id))
-        //     {
-        //         score += 2;
-        //     }
-        // }
-        //
-        // foreach (var category in course.Categories)
-        // {
-        //     if (category.Segment.Name == user.Segment.Name)
-        //     {
-        //         score += 1;
-        //     }
-        // }
-
         return user.Interests.Where(interest => course.Tags.Any(t => t.Id == interest.Id)).Sum(_ => 3)
                + user.Skills.Where(skill => course.Skills.Any(s => s.Id == skill.Id)).Sum(_ => 2)
                + course.Categories.Count(category => category.Segment.Name == user.Segment.Name);

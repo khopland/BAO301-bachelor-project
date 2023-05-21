@@ -1,6 +1,3 @@
-
-using Core.Models;
-
 namespace api.Dtos;
 
 public class UserDto

@@ -7,7 +7,7 @@ public class PostUser
     public string FirstName { get; init; } = default!;
     public string LastName { get; init; } = default!;
     public string? Position { get; init; }
-    public Contact Contact { get; init; }
+    public Contact Contact { get; init; } = default!;
     public ICollection<Skill> Skills { get; set; } = new List<Skill>();
     public ICollection<Tag> Interests { get; set; } = new List<Tag>();
 }

@@ -1,6 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using api.Requests;
+﻿using api.Requests;
 using Mediator;
+using System.Diagnostics.CodeAnalysis;
 
 namespace api;
 
