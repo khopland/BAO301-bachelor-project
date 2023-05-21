@@ -98,7 +98,7 @@ export function NewCourse() {
   })
 
   return (
-    <main className="ml-[5rem] p-5 flex flex-col h-[100vh]">
+    <main className="ml-[5rem] p-5 flex flex-col">
       <div className=" flex flex-col justify-center ">
         <h1 className="self-center text-center text-6xl pb-4 pt-8">
           Create Course

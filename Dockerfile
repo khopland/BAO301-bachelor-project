@@ -12,7 +12,7 @@ WORKDIR /App
 
 # Copy everything
 COPY *.sln global.json ./
-COPY Core Core  
+COPY Core Core
 COPY Infrastructure Infrastructure
 COPY api api
 
@@ -26,5 +26,4 @@ FROM mcr.microsoft.com/dotnet/aspnet:7.0-alpine
 WORKDIR /App
 COPY --from=build-env /App/out .
 COPY --from=frontend client/dist dist
-RUN ls
 ENTRYPOINT ["dotnet", "api.dll"]
