@@ -43,7 +43,6 @@ export const DiscoverPage: React.FC = () => {
       return { ...q, name: searchDebounced }
     })
   }, [searchDebounced])
-  console.log(query)
 
   const { isLoading, error, data } = useQuery<Course[]>({
     queryKey: ['discovery', query],
