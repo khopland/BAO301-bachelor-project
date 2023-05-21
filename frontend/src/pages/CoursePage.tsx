@@ -61,7 +61,7 @@ export const CoursePage: React.FC = () => {
 
   return (
     <>
-      <main className="mx-auto md:ml-[5rem] p-5 grid grid-cols-1 md:grid-cols-7 gap-5 auto-rows-max h-[99vh] w-100 relative">
+      <main className="mx-auto md:ml-[5rem] p-5 grid grid-cols-1 md:grid-cols-7 gap-5 auto-rows-max w-100 relative">
         <header className="flex gap-5 md:col-span-7 bg-transparent p-0">
           <CourseHeader
             title={data.name}
