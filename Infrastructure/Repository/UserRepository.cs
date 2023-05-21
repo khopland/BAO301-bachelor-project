@@ -30,7 +30,7 @@ public class UserRepository : IUserRepository
             .OrderBy(x => x.Id)
             .ToListAsync(cancellationToken);
     }
-    
+
     public async Task<User> CreateUser(User user, CancellationToken cancellationToken)
     {
         var res = await _dbContext.AddAsync(user, cancellationToken);
@@ -80,10 +80,10 @@ public class UserRepository : IUserRepository
 
         enrollment.Status = EnrollmentStatus.COMPLETED;
         enrollment.Progress = course.Duration;
-        
+
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
-    
+
     public async Task<User> UpdateUser(User user, CancellationToken cancellationToken)
     {
         _dbContext.Users.Update(user);

@@ -1,35 +1,37 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { z } from 'zod'
 import {
   Category,
   Course,
   CourseType,
+  Provider,
   Skill,
   Tag,
-  Provider,
-} from '../shearedTypes'
+} from '../sharedTypes'
 import { useState } from 'react'
 import { StringFormElement } from '../components/Forms/StringFormElement'
 import { ListFormElement } from '../components/Forms/ListFormElement'
 import { NumberFormElement } from '../components/Forms/NumberFormElement'
-import { z } from 'zod'
 
-const formValidator = z
-.object({
+const formValidator = z.object({
   name: z.string().min(3),
   description: z.string().min(1),
   level: z.number().min(1).max(3),
   price: z.string().min(0),
-  duration: z.string().regex(new RegExp(/^[0-9]{1,}:[0-9]{2}:[0-9]{2}$/),"dose not match HH:MM:SS, ex. 0:10:00"),
+  duration: z
+    .string()
+    .regex(
+      new RegExp(/^[0-9]{1,}:[0-9]{2}:[0-9]{2}$/),
+      'dose not match HH:MM:SS, ex. 0:10:00'
+    ),
   language: z.string().min(1),
   wbsCode: z.string().min(1),
-  provider: z.object({id: z.string()}),
-  categories: z.array(z.object({id: z.string()})),
-  type: z.object({id: z.string()}),
-  tags:  z.array(z.object({id: z.string()})),
-  skills: z.array(z.object({id: z.string()})),
+  provider: z.object({ id: z.string() }),
+  categories: z.array(z.object({ id: z.string() })),
+  type: z.object({ id: z.string() }),
+  tags: z.array(z.object({ id: z.string() })),
+  skills: z.array(z.object({ id: z.string() })),
 })
-
-
 
 export function NewCourse() {
   const [name, setName] = useState('')
@@ -45,7 +47,6 @@ export function NewCourse() {
   const [tag, setTag] = useState('')
   const [provider, setProvider] = useState('')
 
-
   const categoryQuery = useQuery<Category[]>({
     queryKey: ['category'],
     queryFn: () => fetch('/api/category').then((res) => res.json()),
@@ -56,6 +57,7 @@ export function NewCourse() {
   })
   const skillQuery = useQuery<Skill[]>({
     queryKey: ['skill'],
+
     queryFn: () => fetch('/api/skill').then((res) => res.json()),
   })
   const providerQuery = useQuery<Provider[]>({
@@ -67,7 +69,7 @@ export function NewCourse() {
     queryFn: () => fetch('/api/tag').then((res) => res.json()),
   })
 
-  const mutation = useMutation<Course, {message:string}>({
+  const mutation = useMutation<Course, { message: string }>({
     mutationFn: async () => {
       const body = {
         name,

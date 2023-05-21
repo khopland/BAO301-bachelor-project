@@ -26,6 +26,7 @@ const CourseSection = ({
       <CardWrapper>
         {courses.map((course) => (
           <ActiveCourseCard
+            key={course.id}
             id={course.id}
             title={course.name}
             image={'src/components/Assets/course-illustration.jpg'}
@@ -104,6 +105,7 @@ export const ProfilePage: FC = () => {
       {user?.enrollments && (
         <>
           <CourseSection
+            key={1}
             title="Your Active Courses"
             courses={user.enrollments.reduce(
               (acc, val) => (val.status !== 2 ? acc.concat(val.course) : acc),
@@ -111,6 +113,7 @@ export const ProfilePage: FC = () => {
             )}
           />
           <CourseSection
+            key={2}
             title="Your Completed Courses"
             courses={user.enrollments.reduce(
               (acc, val) => (val.status === 2 ? acc.concat(val.course) : acc),
