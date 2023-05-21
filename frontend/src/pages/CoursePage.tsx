@@ -41,7 +41,7 @@ export const CoursePage: React.FC = () => {
       }),
     })
       .then((x) => (x.ok ? EnrollmentQuery.refetch() : null))
-      .then(() => refresh())
+      ?.then(() => refresh())
   }
   const completeCourse = () => {
     fetch('/api/enrollment/complete', {
@@ -51,7 +51,9 @@ export const CoursePage: React.FC = () => {
         userId: user?.id,
         courseId: params.courseId,
       }),
-    }).then((x) => (x.ok ? EnrollmentQuery.refetch() : null))
+    })
+      .then((x) => (x.ok ? EnrollmentQuery.refetch() : null))
+      ?.then(() => refresh())
   }
 
   if (isLoading) return <div>Loading...</div>

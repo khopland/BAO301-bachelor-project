@@ -15,7 +15,6 @@ export const Chip: React.FC<ChipProps> = ({
 }) => {
   const [isSelected, setSelected] = useState(selected)
   const handleClick = () => {
-    console.log(!isSelected)
     setSelected(!isSelected)
     if (onSelectChange) onSelectChange(!isSelected)
   }
