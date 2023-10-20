@@ -29,7 +29,7 @@
     "tailwind-scrollbar-hide": "^1.1.7",
     "use-debounce": "^9.0.3",
     "vite-plugin-svgr": "^2.4.0",
-    "zod": "^3.21.4"
+    "zod": "^3.22.3"
   },
   "devDependencies": {
     "@types/react": "^18.0.26",
